@@ -168,7 +168,8 @@
       }
     }
     if (pts.length < 40) return;
-    document.body.classList.add('fx-on');
+    h1.style.visibility = 'hidden';
+    cv.style.display = 'block';
 
     var ps = pts.map(function (q) {
       var ang = Math.random() * Math.PI * 2, rad = 90 + Math.random() * 320;
@@ -197,7 +198,8 @@
       if (!done) requestAnimationFrame(frame);
       else {
         // Hand back to real text so it stays selectable and sharp.
-        document.body.classList.remove('fx-on');
+        cv.style.display = 'none';
+        h1.style.visibility = '';
       }
     }
     requestAnimationFrame(frame);
