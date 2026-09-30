@@ -132,6 +132,35 @@
     }
   }
 
+  // --- stage switcher: light only the parts a stage touches ---------------
+  var bar = document.querySelector('.stagebar');
+  if (bar) {
+    var dia = document.querySelector('.dia');
+    var note = document.getElementById('stageNote');
+    var NOTES = {
+      '1': 'Action-free video only. The video expert learns to imagine the chain; there are no action labels and no action expert in the loop.',
+      '2': 'Robot demonstrations. Both experts train together — the action expert learns to read the chain and emit actions.',
+      '3': 'Closed loop. The video pass runs once and its sub-goal features are reused, so each replan only denoises the action head.'
+    };
+    function apply(s) {
+      dia.dataset.stage = s;
+      dia.querySelectorAll('.part').forEach(function (el) {
+        el.classList.remove('off', 'cached');
+        var isV = el.classList.contains('video'), isA = el.classList.contains('action');
+        if (s === '1' && isA) el.classList.add('off');
+        if (s === '3' && isV) el.classList.add('cached');
+      });
+      if (note) note.textContent = NOTES[s];
+      bar.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('on', b.dataset.stage === s);
+      });
+    }
+    bar.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.stage); });
+    });
+    apply('1');
+  }
+
   // --- page particles: drift left-to-right, blue into red ----------------
   var fx = document.querySelector('.page-fx');
   if (fx && !reduced) {

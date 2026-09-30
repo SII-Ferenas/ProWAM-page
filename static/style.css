@@ -343,29 +343,29 @@ header, main, footer, section{position:relative; z-index:1}
   .dia-in,.dia-out{max-width:none}
 }
 
-/* ---------- mechanism flow ---------- */
-.flow{list-style:none; counter-reset:f; padding:0; margin:38px 0 0;
-  display:grid; grid-template-columns:repeat(5,1fr); gap:0}
-.flow li{position:relative; padding:0 22px 0 0}
-.flow li::after{content:""; position:absolute; left:14px; right:14px; top:15px; height:2px;
-  background:#252b36; z-index:0}
-.flow li:last-child::after{display:none}
-.flow .n{position:relative; z-index:1; display:grid; place-items:center;
-  width:30px; height:30px; border-radius:50%; background:var(--bg-soft);
-  border:2px solid #39414f; color:var(--muted);
-  font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:500}
-.flow li.blue .n{border-color:var(--blue); color:var(--blue-soft); box-shadow:0 0 16px rgba(0,162,232,.3)}
-.flow li.red .n{border-color:var(--red); color:var(--red-soft); box-shadow:0 0 16px rgba(220,30,30,.24)}
-.flow li.loop .n{border-color:#7a5fa8; color:#c0a6e0}
-.flow h3{font-size:15px; margin:16px 0 8px; letter-spacing:-.01em}
-.flow p{font-size:13.5px; line-height:1.62; color:var(--dim); margin:0; padding-right:8px}
-@media (max-width:900px){
-  .flow{grid-template-columns:1fr; gap:26px}
-  .flow li{padding:0 0 0 46px}
-  .flow li::after{left:15px; top:34px; bottom:-26px; right:auto; width:2px; height:auto}
-  .flow .n{position:absolute; left:0; top:0}
-  .flow h3{margin-top:2px}
-}
+/* stage switcher */
+.stagebar{display:flex; gap:9px; flex-wrap:wrap; margin-top:34px}
+.stagebar button{background:transparent; border:1px solid var(--line); color:var(--dim);
+  font:inherit; font-size:12.5px; padding:9px 17px; border-radius:100px; cursor:pointer;
+  transition:all .22s ease}
+.stagebar button:hover{color:var(--muted); border-color:#39414f}
+.stagebar button.on{color:var(--fg); border-color:var(--blue); background:rgba(0,162,232,.12)}
+.stagebar button[data-stage="3"].on{border-color:var(--red); background:rgba(220,30,30,.1)}
+
+/* Parts fade out when a stage does not involve them. */
+.part{transition:opacity .4s ease, filter .4s ease}
+.part.off{opacity:.16; filter:grayscale(1)}
+.part.cached{opacity:.42}
+.part.cached::after{content:"cached"; display:inline-block; margin-left:7px; font-size:9.5px;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--blue-soft);
+  border:1px solid rgba(0,162,232,.4); border-radius:100px; padding:1px 7px}
+.dia-in img{width:100%; border-radius:10px; border:2px solid #5a6474}
+.dia-in b{display:block; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--dim); margin-top:7px; font-weight:600; text-align:center}
+.thumbs{display:flex; gap:6px; margin-top:7px}
+.thumbs img{width:46px; height:46px; object-fit:cover; border-radius:7px; border:2px solid var(--blue)}
+.thumbs.red img{border-color:var(--red)}
+.stage-note{font-size:13.5px; color:var(--muted); margin-top:20px; min-height:22px}
 
 /* ---------- bibtex ---------- */
 .cite-sec{padding-bottom:96px}

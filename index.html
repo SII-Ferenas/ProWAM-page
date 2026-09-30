@@ -100,96 +100,49 @@
   </div>
 
   <div class="wrap">
-      <div class="dia reveal">
-        <div class="dia-in">
-          <div class="chip obs">observation</div>
-          <div class="chip txt">&ldquo;put the soup in the basket&rdquo;</div>
-        </div>
+      <div class="stagebar reveal" role="tablist">
+        <button data-stage="1" class="on">Stage 1 &mdash; learn to imagine</button>
+        <button data-stage="2">Stage 2 &mdash; learn to act</button>
+        <button data-stage="3">Inference &mdash; imagine once, act many</button>
+      </div>
 
-        <div class="dia-arrow" aria-hidden="true"></div>
+      <div class="dia reveal" data-stage="1">
+        <div class="dia-in part in">
+          <img src="static/mf/obs.jpg" alt="observation"/>
+          <b>observation</b>
+        </div>
+        <div class="dia-arrow part in" aria-hidden="true"></div>
 
         <div class="mot">
           <div class="mot-hd">Mixture of transformers <em>shared attention, separate weights</em></div>
           <div class="mot-body">
-            <div class="expert vid">
-              <h4>Video expert</h4>
-              <div class="toks">
-                <span class="tk o">frame</span>
-                <span class="tk g">goal</span><span class="tk g">goal</span><span class="tk g">goal</span>
-              </div>
+            <div class="expert vid part video"><h4>Video expert</h4>
+              <div class="toks"><span class="tk o">frame</span><span class="tk g">goal</span><span class="tk g">goal</span><span class="tk g">goal</span></div>
             </div>
-            <div class="expert act">
-              <h4>Action expert</h4>
-              <div class="toks">
-                <span class="tk a">act</span><span class="tk a">act</span><span class="tk a">act</span>
-              </div>
+            <div class="expert act part action"><h4>Action expert</h4>
+              <div class="toks"><span class="tk a">act</span><span class="tk a">act</span><span class="tk a">act</span></div>
             </div>
           </div>
           <div class="mot-mask">
-            <span class="ok">goals see the frame and each other</span>
-            <span class="ok">actions see the frame and the goals</span>
-            <span class="no">the video side never sees actions</span>
+            <span class="ok part video">goals see the frame and each other</span>
+            <span class="ok part action">actions see the frame and the goals</span>
+            <span class="no part">video never sees actions</span>
           </div>
         </div>
 
-        <div class="dia-arrow" aria-hidden="true"></div>
+        <div class="dia-arrow part in" aria-hidden="true"></div>
 
         <div class="dia-out">
-          <div class="out-chain">
-            <b>chain of milestones</b>
-            <div class="dots"><i></i><i></i><i></i><i></i></div>
-            <em>early &rarr; late</em>
+          <div class="part video"><b>imagined chain</b>
+            <div class="thumbs"><img src="static/mf/g0.jpg" alt=""/><img src="static/mf/g1.jpg" alt=""/><img src="static/mf/g2.jpg" alt=""/></div>
           </div>
-          <div class="out-act">
-            <b>action chunk</b>
-            <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <em>executed, then re-anchored</em>
+          <div class="part action"><b>action chunk</b>
+            <div class="thumbs red"><img src="static/mf/a0.jpg" alt=""/><img src="static/mf/a1.jpg" alt=""/><img src="static/mf/a2.jpg" alt=""/></div>
           </div>
         </div>
       </div>
 
-      <ol class="flow reveal">
-        <li>
-          <span class="n">1</span>
-          <h3>Read the scene</h3>
-          <p>The current camera frame and the instruction go in. That frame is the origin of
-            progress &mdash; everything downstream is measured relative to it.</p>
-        </li>
-        <li>
-          <span class="n">2</span>
-          <h3>Pick the milestones</h3>
-          <p>Instead of one final goal, the model asks for the scene at a few points along the
-            way &mdash; a tenth of the way through, a third, halfway. Training samples how many,
-            so one model serves any number at test time.</p>
-        </li>
-        <li class="blue">
-          <span class="n">3</span>
-          <h3>Imagine them, all at once</h3>
-          <p>The video expert generates the whole chain in a single pass. Each slot is told
-            which point along progress it stands for, so the chain comes out ordered rather
-            than as independent guesses.</p>
-        </li>
-        <li class="red">
-          <span class="n">4</span>
-          <h3>Act toward the chain</h3>
-          <p>The action expert reads the observation and the imagined milestones, and emits a
-            chunk of actions. The video side never reads action tokens, so its work can be
-            reused while only the action head is refined.</p>
-        </li>
-        <li class="loop">
-          <span class="n">5</span>
-          <h3>Re-anchor and repeat</h3>
-          <p>After executing part of the chunk the model looks again. The new frame becomes the
-            new origin, so the same point along progress now names a different target. The plan
-            is re-grounded as the scene moves.</p>
-        </li>
-      </ol>
-
-      <div class="arch-stages reveal">
-        <div><b>Stage 1</b><span>action-free video &mdash; learn to imagine</span></div>
-        <div><b>Stage 2</b><span>robot demonstrations &mdash; learn to act</span></div>
-        <div class="inf"><b>Inference</b><span>imagine once, act many times</span></div>
-      </div>
+      <p class="stage-note reveal" id="stageNote"></p>
     </div>
   </section>
 
@@ -307,26 +260,6 @@
         <button data-mode="gen">imagined</button>
         <button data-mode="gt">ground truth</button>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="wrap narrow">
-    <div class="eyebrow reveal">Ablations</div>
-    <h2 class="reveal">Nearer plans generalize better. More sub-goals are nearly free.</h2>
-  </div>
-  <div class="wrap">
-    <div class="grid-3">
-      <figure class="fig small reveal"><img src="static/img/abl_a.png" alt="Efficiency vs robustness"/>
-        <figcaption><b>Efficiency.</b> ProWAM reaches 75.7% OOD at lower cost than competing
-        imagination strategies.</figcaption></figure>
-      <figure class="fig small reveal"><img src="static/img/abl_b.png" alt="Sub-goal count"/>
-        <figcaption><b>Sub-goal count.</b> One model trained with k∈{1..4} serves all four;
-        k=1→4 adds only 3.5 TFLOPs.</figcaption></figure>
-      <figure class="fig small reveal"><img src="static/img/abl_c.png" alt="Planning horizon"/>
-        <figcaption><b>Horizon.</b> Near (68.4→75.7) beats Far monotonically; ID stays flat
-        near 86%.</figcaption></figure>
     </div>
   </div>
 </section>
