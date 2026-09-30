@@ -100,6 +100,54 @@
   </div>
 
   <div class="wrap">
+      <div class="dia reveal">
+        <div class="dia-in">
+          <div class="chip obs">observation</div>
+          <div class="chip txt">&ldquo;put the soup in the basket&rdquo;</div>
+        </div>
+
+        <div class="dia-arrow" aria-hidden="true"></div>
+
+        <div class="mot">
+          <div class="mot-hd">Mixture of transformers <em>shared attention, separate weights</em></div>
+          <div class="mot-body">
+            <div class="expert vid">
+              <h4>Video expert</h4>
+              <div class="toks">
+                <span class="tk o">frame</span>
+                <span class="tk g">goal</span><span class="tk g">goal</span><span class="tk g">goal</span>
+              </div>
+            </div>
+            <div class="expert act">
+              <h4>Action expert</h4>
+              <div class="toks">
+                <span class="tk a">act</span><span class="tk a">act</span><span class="tk a">act</span>
+              </div>
+            </div>
+          </div>
+          <div class="mot-mask">
+            <span class="ok">goals see the frame and each other</span>
+            <span class="ok">actions see the frame and the goals</span>
+            <span class="no">the video side never sees actions</span>
+          </div>
+        </div>
+
+        <div class="dia-arrow" aria-hidden="true"></div>
+
+        <div class="dia-out">
+          <div class="out-chain">
+            <b>chain of milestones</b>
+            <div class="dots"><i></i><i></i><i></i><i></i></div>
+            <em>early &rarr; late</em>
+          </div>
+          <div class="out-act">
+            <b>action chunk</b>
+            <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <em>executed, then re-anchored</em>
+          </div>
+        </div>
+      </div>
+
       <ol class="flow reveal">
         <li>
           <span class="n">1</span>
