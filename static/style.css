@@ -291,6 +291,36 @@ tbody tr.ours td b{color:var(--blue-soft)}
   .mf-goals img{width:74px; height:74px}
 }
 
+/* --- method figure: staged reveal --- */
+.mf .mf-tile, .mf-expert, .mf-goals figure, .mf-acts figure, .mf-link, .mf-arrow{
+  opacity:0; transform:translateY(8px); transition:opacity .5s ease, transform .5s ease}
+.mf.run .mf-tile, .mf.run .mf-expert, .mf.run .mf-goals figure,
+.mf.run .mf-acts figure, .mf.run .mf-link, .mf.run .mf-arrow{opacity:1; transform:none}
+.mf-goals figure{transition-delay:var(--d,0s)}
+.mf-acts figure{transition-delay:var(--d,0s)}
+
+/* A pulse travels the chain, then the action row, echoing the data flow. */
+.mf-rail{overflow:hidden}
+.mf-rail::after{content:""; position:absolute; inset:0; transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,#fff,transparent); opacity:.85}
+.mf.run .mf-rail::after{animation:mfpulse 2.6s ease-in-out 1.1s infinite}
+@keyframes mfpulse{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+.mf.run .mf-goals figure img{animation:mfglow 2.6s ease-in-out infinite; animation-delay:var(--d,0s)}
+@keyframes mfglow{
+  0%,70%,100%{box-shadow:0 0 14px rgba(0,162,232,.22)}
+  18%{box-shadow:0 0 26px rgba(0,162,232,.75); border-color:#7fd4ff}
+}
+.mf.run .mf-acts figure img{animation:mfact 2.6s ease-in-out infinite; animation-delay:var(--d,0s)}
+@keyframes mfact{
+  0%,70%,100%{box-shadow:none}
+  22%{box-shadow:0 0 22px rgba(220,30,30,.6)}
+}
+@media (prefers-reduced-motion:reduce){
+  .mf .mf-tile,.mf-expert,.mf-goals figure,.mf-acts figure,.mf-link,.mf-arrow{
+    opacity:1; transform:none; transition:none}
+  .mf.run .mf-rail::after,.mf.run .mf-goals figure img,.mf.run .mf-acts figure img{animation:none}
+}
+
 /* ---------- bibtex ---------- */
 .cite-sec{padding-bottom:96px}
 .bib{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);

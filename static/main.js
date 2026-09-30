@@ -109,6 +109,25 @@
     io.observe(row);
   });
 
+  // --- method figure: stagger the reveal, then let the pulse loop ---------
+  var mf = document.querySelector('.mf');
+  if (mf) {
+    mf.querySelectorAll('.mf-goals figure').forEach(function (f, i) {
+      f.style.setProperty('--d', (0.35 + i * 0.16) + 's');
+    });
+    mf.querySelectorAll('.mf-acts figure').forEach(function (f, i) {
+      f.style.setProperty('--d', (1.05 + i * 0.1) + 's');
+    });
+    if (reduced || !('IntersectionObserver' in window)) {
+      mf.classList.add('run');
+    } else {
+      var mio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { mf.classList.add('run'); mio.disconnect(); } });
+      }, { threshold: 0.25 });
+      mio.observe(mf);
+    }
+  }
+
   // --- progress scrubber --------------------------------------------------
   var scrub = document.querySelector('.scrub');
   if (scrub) {
