@@ -100,38 +100,47 @@
   </div>
 
   <div class="wrap">
-      <div class="arch reveal">
-        <div class="arch-in">
-          <img src="static/mf/obs.jpg" alt="current observation"/>
-          <b>observation</b>
-          <i>&ldquo;put the soup in the basket&rdquo;</i>
-        </div>
-        <div class="arch-flow">
-          <div class="arch-lane blue">
-            <div class="arch-tag">Video expert &mdash; imagines</div>
-            <div class="arch-strip">
-              <figure><img src="static/mf/g0.jpg" alt="sub-goal"/><figcaption>r = 0.1</figcaption></figure>
-              <figure><img src="static/mf/g1.jpg" alt="sub-goal"/><figcaption>r = 0.3</figcaption></figure>
-              <figure><img src="static/mf/g2.jpg" alt="sub-goal"/><figcaption>r = 0.5</figcaption></figure>
-              <figure><img src="static/mf/g3.jpg" alt="sub-goal"/><figcaption>r = 0.9</figcaption></figure>
-            </div>
-          </div>
-          <div class="arch-bridge"><span>actions read the chain &mdash; the chain never reads actions</span></div>
-          <div class="arch-lane red">
-            <div class="arch-tag">Action expert &mdash; executes</div>
-            <div class="arch-strip">
-              <figure><img src="static/mf/a0.jpg" alt="executed frame"/></figure>
-              <figure><img src="static/mf/a1.jpg" alt="executed frame"/></figure>
-              <figure><img src="static/mf/a2.jpg" alt="executed frame"/></figure>
-              <figure><img src="static/mf/a3.jpg" alt="executed frame"/></figure>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ol class="flow reveal">
+        <li>
+          <span class="n">1</span>
+          <h3>Read the scene</h3>
+          <p>The current camera frame and the instruction go in. That frame is the origin of
+            progress &mdash; everything downstream is measured relative to it.</p>
+        </li>
+        <li>
+          <span class="n">2</span>
+          <h3>Pick the milestones</h3>
+          <p>Instead of one final goal, the model asks for the scene at a few points along the
+            way &mdash; a tenth of the way through, a third, halfway. Training samples how many,
+            so one model serves any number at test time.</p>
+        </li>
+        <li class="blue">
+          <span class="n">3</span>
+          <h3>Imagine them, all at once</h3>
+          <p>The video expert generates the whole chain in a single pass. Each slot is told
+            which point along progress it stands for, so the chain comes out ordered rather
+            than as independent guesses.</p>
+        </li>
+        <li class="red">
+          <span class="n">4</span>
+          <h3>Act toward the chain</h3>
+          <p>The action expert reads the observation and the imagined milestones, and emits a
+            chunk of actions. The video side never reads action tokens, so its work can be
+            reused while only the action head is refined.</p>
+        </li>
+        <li class="loop">
+          <span class="n">5</span>
+          <h3>Re-anchor and repeat</h3>
+          <p>After executing part of the chunk the model looks again. The new frame becomes the
+            new origin, so the same point along progress now names a different target. The plan
+            is re-grounded as the scene moves.</p>
+        </li>
+      </ol>
+
       <div class="arch-stages reveal">
-        <div><b>Stage 1</b><span>action-free video</span></div>
-        <div><b>Stage 2</b><span>+ robot demonstrations</span></div>
-        <div class="inf"><b>Inference</b><span>video pass cached, actions denoised</span></div>
+        <div><b>Stage 1</b><span>action-free video &mdash; learn to imagine</span></div>
+        <div><b>Stage 2</b><span>robot demonstrations &mdash; learn to act</span></div>
+        <div class="inf"><b>Inference</b><span>imagine once, act many times</span></div>
       </div>
     </div>
   </section>
