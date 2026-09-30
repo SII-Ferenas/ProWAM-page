@@ -240,6 +240,10 @@ tbody tr.ours td b{color:var(--blue-soft)}
 
 .lab .up{color:var(--blue-soft); font-weight:600}
 
+.btn.disabled{opacity:.5; cursor:default; pointer-events:none}
+.btn i{font-style:normal; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
+  opacity:.7; margin-left:5px}
+
 /* ---------- bibtex ---------- */
 .cite-sec{padding-bottom:96px}
 .bib{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
