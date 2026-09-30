@@ -159,6 +159,7 @@
     oc.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
     oc.textBaseline = 'middle';
     oc.fillText('ProWAM', 4, H / 2);
+    var proW = probe.measureText('Pro').width + 4;   // colour split point
 
     var data = oc.getImageData(0, 0, W, H).data;
     var step = W > 700 ? 4 : 3, pts = [];
@@ -188,8 +189,13 @@
         p.x += (p.tx - p.x) * p.d;
         p.y += (p.ty - p.y) * p.d;
         if (Math.abs(p.tx - p.x) < 0.6 && Math.abs(p.ty - p.y) < 0.6) settled++;
-        var f = p.tx / W;
-        ctx.fillStyle = 'rgb(' + Math.round(f * 220) + ',' + Math.round(162 - f * 132) + ',' + Math.round(232 - f * 202) + ')';
+        if (p.tx < proW) {
+          ctx.fillStyle = '#e9ecf2';
+        } else {
+          // Ramp only across "WAM", matching the h1 gradient.
+          var f = Math.min(1, Math.max(0, (p.tx - proW) / (W - proW)));
+          ctx.fillStyle = 'rgb(' + Math.round(0 + f * 220) + ',' + Math.round(162 - f * 132) + ',' + Math.round(232 - f * 202) + ')';
+        }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
