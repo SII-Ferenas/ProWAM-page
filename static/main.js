@@ -77,7 +77,7 @@
   document.querySelectorAll('.cl-row').forEach(function (row) {
     var rounds = row.querySelectorAll('.cl-round');
     var fill = row.querySelector('.cl-line-fill');
-    var i = 0, timer = null;
+    var i = 0, hold = 0, timer = null;
 
     function tick() {
       if (i < rounds.length) {
@@ -87,6 +87,10 @@
         if (fill) fill.style.width = ((i + 1) / rounds.length) * 100 + '%';
         i++;
       } else {
+        // Hold the completed sequence for a beat before clearing, otherwise the
+        // rounds wipe the instant the last one lands.
+        hold = (hold + 1) % 3;
+        if (hold !== 0) return;
         rounds.forEach(function (r) { r.classList.remove('on'); });
         if (fill) fill.style.width = '0%';
         i = 0;
@@ -102,7 +106,7 @@
 
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
-        if (e.isIntersecting && !timer) { tick(); timer = setInterval(tick, 1900); }
+        if (e.isIntersecting && !timer) { tick(); timer = setInterval(tick, 3200); }
         else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
       });
     }, { threshold: 0.2 });
