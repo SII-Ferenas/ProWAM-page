@@ -162,11 +162,19 @@
     var proW = probe.measureText('Pro').width + 4;   // colour split point
 
     var data = oc.getImageData(0, 0, W, H).data;
-    var step = W > 700 ? 4 : 3, pts = [];
+    // Sample at 2px for fine grain, but thin the cloud if the heading is large
+    // enough that the count would hurt the frame budget.
+    var step = 2, pts = [];
     for (var y = 0; y < H; y += step) {
       for (var x = 0; x < W; x += step) {
         if (data[(y * W + x) * 4 + 3] > 128) pts.push([x, y]);
       }
+    }
+    var CAP = 4200;
+    if (pts.length > CAP) {
+      var keep = CAP / pts.length, thin = [];
+      for (var q = 0; q < pts.length; q++) if (Math.random() < keep) thin.push(pts[q]);
+      pts = thin;
     }
     if (pts.length < 40) return;
     // The particle assembly *is* this heading's entrance, so take it out of the
@@ -183,10 +191,13 @@
     h1.style.opacity = '0';
 
     var ps = pts.map(function (q) {
-      var ang = Math.random() * Math.PI * 2, rad = 90 + Math.random() * 320;
+      var ang = Math.random() * Math.PI * 2, rad = 70 + Math.random() * 380;
       return { tx: q[0], ty: q[1],
                x: q[0] + Math.cos(ang) * rad, y: q[1] + Math.sin(ang) * rad,
-               d: 0.055 + Math.random() * 0.05, r: step * 0.5 };
+               d: 0.05 + Math.random() * 0.055,
+               r: step * (0.28 + Math.random() * 0.26),
+               a: 0.55 + Math.random() * 0.45,
+               sp: Math.random() < 0.035 };
     });
 
     var t0 = null, done = false;
@@ -199,16 +210,25 @@
         p.x += (p.tx - p.x) * p.d;
         p.y += (p.ty - p.y) * p.d;
         if (Math.abs(p.tx - p.x) < 0.6 && Math.abs(p.ty - p.y) < 0.6) settled++;
+        var col;
         if (p.tx < proW) {
-          ctx.fillStyle = '#e9ecf2';
+          col = '233,236,242';
         } else {
           // Ramp only across "WAM", matching the h1 gradient.
           var f = Math.min(1, Math.max(0, (p.tx - proW) / (W - proW)));
-          ctx.fillStyle = 'rgb(' + Math.round(0 + f * 220) + ',' + Math.round(162 - f * 132) + ',' + Math.round(232 - f * 202) + ')';
+          col = Math.round(f * 220) + ',' + Math.round(162 - f * 132) + ',' + Math.round(232 - f * 202);
+        }
+        // Distance from target drives brightness, so the word ignites as it forms.
+        var dx = p.tx - p.x, dy = p.ty - p.y;
+        var near = 1 - Math.min(1, Math.sqrt(dx * dx + dy * dy) / 90);
+        ctx.fillStyle = 'rgba(' + col + ',' + (p.a * (0.3 + near * 0.7)) + ')';
+        if (p.sp) {
+          ctx.shadowBlur = 8; ctx.shadowColor = 'rgba(' + col + ',.9)';
         }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
+        ctx.shadowBlur = 0;
       }
       if (settled / ps.length > 0.985 && ts - t0 > 900) done = true;
       if (!done) requestAnimationFrame(frame);
