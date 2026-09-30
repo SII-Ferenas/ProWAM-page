@@ -180,7 +180,7 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .cl-row{margin-top:30px}
 .cl-row-head{display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted);
   font-style:italic; margin-bottom:12px}
-.cl-track{display:grid; grid-template-columns:repeat(4,1fr); gap:20px}
+.cl-track{display:grid; grid-template-columns:repeat(2,1fr); gap:34px}
 .cl-round{opacity:.2; transition:opacity .38s ease}
 .cl-round.on{opacity:1}
 .cl-trio{display:grid; grid-template-columns:repeat(3,1fr); gap:6px}

@@ -66,10 +66,8 @@
 <section class="sec">
   <div class="wrap narrow">
     <div class="eyebrow reveal">Results</div>
-    <h2 class="reveal">Strongest where it matters: out of distribution.</h2>
-    <p class="lead reveal">ProWAM's margin grows as the gap to training data widens: it matches the
-      field in distribution and pulls ahead out of it &mdash; <b>+36% relative</b> on randomized
-      RoboTwin and <b>+27%</b> on a real robot in novel scenes.</p>
+    <h2 class="reveal">Powerful across every benchmark we tried.</h2>
+    <p class="lead reveal">State of the art on LIBERO-Plus, and the margin widens out of distribution: <b>+36%</b> on randomized RoboTwin, <b>+27%</b> on a real robot.</p>
   </div>
   <div class="wrap narrow">
     <div class="tbl reveal">
@@ -77,11 +75,11 @@
         <thead><tr><th>Benchmark</th><th>Split</th><th>Success</th></tr></thead>
         <tbody>
           <tr><td>LIBERO</td><td><span class="sp seen">seen</span></td><td>98.8</td></tr>
-          <tr><td>RoboTwin</td><td><span class="sp seen">seen</span></td><td>85.8</td></tr>
           <tr class="ours"><td>LIBERO-Plus</td><td><span class="sp unseen">unseen</span></td><td><b>85.8</b></td></tr>
-          <tr class="ours"><td>RoboTwin</td><td><span class="sp unseen">unseen</span> randomized</td><td><b>75.7</b></td></tr>
-          <tr><td>RoboCasa365</td><td><span class="sp seen">seen</span> overall</td><td>48.1</td></tr>
-          <tr class="ours"><td>Real robot</td><td><span class="sp unseen">unseen</span> novel scenes</td><td><b>70.0</b></td></tr>
+          <tr><td>RoboTwin &mdash; clean</td><td><span class="sp seen">seen</span></td><td>85.8</td></tr>
+          <tr class="ours"><td>RoboTwin &mdash; randomized</td><td><span class="sp unseen">unseen</span></td><td><b>75.7</b></td></tr>
+          <tr><td>RoboCasa365</td><td><span class="sp seen">seen</span></td><td>48.1</td></tr>
+          <tr class="ours"><td>Real robot</td><td><span class="sp unseen">unseen</span></td><td><b>70.0</b></td></tr>
         </tbody>
       </table>
       <p class="tbl-note">Full comparisons against prior work are in the paper.</p>
@@ -154,152 +152,44 @@
       <div class="cl-row reveal">
         <div class="cl-row-head"><span class="sp seen">seen</span>&ldquo;put both the alphabet soup and the tomato sauce in the basket&rdquo;</div>
         <div class="cl-track">
-          <div class="cl-round" data-i="0">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t1_ob0.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t1_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t1_ex0.gif" alt="execution"/><span>execute</span></div>
+            <div class="cl-round" data-i="0">
+              <div class="cl-trio">
+                <div class="cl-cell obs"><img src="static/cl/t1_ob0.png" alt="observation"/><span>observe</span></div>
+                <div class="cl-cell imagine"><img src="static/cl/t1_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
+                <div class="cl-cell exec"><img src="static/cl/t1_ex0.gif" alt="execution"/><span>execute</span></div>
+              </div>
+              <div class="cl-tick"><b></b><em>replan 1</em></div>
             </div>
-            <div class="cl-tick"><b></b><em>replan 1</em></div>
-          </div>
-          <div class="cl-round" data-i="1">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t1_ob1.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t1_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t1_ex1.gif" alt="execution"/><span>execute</span></div>
+            <div class="cl-round" data-i="1">
+              <div class="cl-trio">
+                <div class="cl-cell obs"><img src="static/cl/t1_ob1.png" alt="observation"/><span>observe</span></div>
+                <div class="cl-cell imagine"><img src="static/cl/t1_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
+                <div class="cl-cell exec"><img src="static/cl/t1_ex1.gif" alt="execution"/><span>execute</span></div>
+              </div>
+              <div class="cl-tick"><b></b><em>replan 2</em></div>
             </div>
-            <div class="cl-tick"><b></b><em>replan 2</em></div>
-          </div>
-          <div class="cl-round" data-i="2">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t1_ob2.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t1_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t1_ex2.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 3</em></div>
-          </div>
-          <div class="cl-round" data-i="3">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t1_ob3.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t1_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t1_ex3.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 4</em></div>
-          </div>
-        </div>
-        <div class="cl-line"><div class="cl-line-fill"></div></div>
-      </div>
-      <div class="cl-row reveal">
-        <div class="cl-row-head"><span class="sp seen">seen</span>&ldquo;pick up the cream cheese and place it in the basket&rdquo;</div>
-        <div class="cl-track">
-          <div class="cl-round" data-i="0">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t2_ob0.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t2_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t2_ex0.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 1</em></div>
-          </div>
-          <div class="cl-round" data-i="1">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t2_ob1.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t2_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t2_ex1.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 2</em></div>
-          </div>
-          <div class="cl-round" data-i="2">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t2_ob2.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t2_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t2_ex2.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 3</em></div>
-          </div>
-          <div class="cl-round" data-i="3">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t2_ob3.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t2_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t2_ex3.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 4</em></div>
-          </div>
         </div>
         <div class="cl-line"><div class="cl-line-fill"></div></div>
       </div>
       <div class="cl-row reveal">
         <div class="cl-row-head"><span class="sp unseen">unseen</span>&ldquo;turn on the stove and put the moka pot on it&rdquo;</div>
         <div class="cl-track">
-          <div class="cl-round" data-i="0">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t3_ob0.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t3_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t3_ex0.gif" alt="execution"/><span>execute</span></div>
+            <div class="cl-round" data-i="0">
+              <div class="cl-trio">
+                <div class="cl-cell obs"><img src="static/cl/t3_ob0.png" alt="observation"/><span>observe</span></div>
+                <div class="cl-cell imagine"><img src="static/cl/t3_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
+                <div class="cl-cell exec"><img src="static/cl/t3_ex0.gif" alt="execution"/><span>execute</span></div>
+              </div>
+              <div class="cl-tick"><b></b><em>replan 1</em></div>
             </div>
-            <div class="cl-tick"><b></b><em>replan 1</em></div>
-          </div>
-          <div class="cl-round" data-i="1">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t3_ob1.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t3_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t3_ex1.gif" alt="execution"/><span>execute</span></div>
+            <div class="cl-round" data-i="1">
+              <div class="cl-trio">
+                <div class="cl-cell obs"><img src="static/cl/t3_ob1.png" alt="observation"/><span>observe</span></div>
+                <div class="cl-cell imagine"><img src="static/cl/t3_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
+                <div class="cl-cell exec"><img src="static/cl/t3_ex1.gif" alt="execution"/><span>execute</span></div>
+              </div>
+              <div class="cl-tick"><b></b><em>replan 2</em></div>
             </div>
-            <div class="cl-tick"><b></b><em>replan 2</em></div>
-          </div>
-          <div class="cl-round" data-i="2">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t3_ob2.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t3_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t3_ex2.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 3</em></div>
-          </div>
-          <div class="cl-round" data-i="3">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t3_ob3.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t3_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t3_ex3.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 4</em></div>
-          </div>
-        </div>
-        <div class="cl-line"><div class="cl-line-fill"></div></div>
-      </div>
-      <div class="cl-row reveal">
-        <div class="cl-row-head"><span class="sp unseen">unseen</span>&ldquo;open the middle drawer of the cabinet&rdquo;</div>
-        <div class="cl-track">
-          <div class="cl-round" data-i="0">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t4_ob0.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t4_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t4_ex0.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 1</em></div>
-          </div>
-          <div class="cl-round" data-i="1">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t4_ob1.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t4_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t4_ex1.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 2</em></div>
-          </div>
-          <div class="cl-round" data-i="2">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t4_ob2.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t4_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t4_ex2.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 3</em></div>
-          </div>
-          <div class="cl-round" data-i="3">
-            <div class="cl-trio">
-              <div class="cl-cell obs"><img src="static/cl/t4_ob3.png" alt="observation"/><span>observe</span></div>
-              <div class="cl-cell imagine"><img src="static/cl/t4_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
-              <div class="cl-cell exec"><img src="static/cl/t4_ex3.gif" alt="execution"/><span>execute</span></div>
-            </div>
-            <div class="cl-tick"><b></b><em>replan 4</em></div>
-          </div>
         </div>
         <div class="cl-line"><div class="cl-line-fill"></div></div>
       </div>
