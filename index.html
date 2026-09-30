@@ -102,13 +102,39 @@
   </div>
 
   <div class="wrap">
-    <figure class="fig reveal">
-      <img src="static/img/method.svg" alt="ProWAM architecture"/>
-      <figcaption>Sub-goals are generated in a single cached forward pass, so replanning only
-        denoises the action head.</figcaption>
-    </figure>
-    <p class="cap reveal">Trained in two stages: sub-goal prediction is learned from
-      <b>action-free video</b>, then video and action are fine-tuned jointly on robot
+    <div class="mf reveal">
+      <div class="mf-col mf-in">
+        <div class="mf-tile"><img src="static/mf/obs.jpg" alt="current observation"/><b>observation</b></div>
+        <div class="mf-prompt">&ldquo;put the bowl on the stove&rdquo;</div>
+      </div>
+
+      <div class="mf-arrow"><span></span></div>
+
+      <div class="mf-col mf-mid">
+        <div class="mf-expert video">Video expert</div>
+        <div class="mf-chain">
+          <div class="mf-rail"></div>
+          <div class="mf-goals">
+            <figure><img src="static/mf/g0.jpg" alt="sub-goal at r=0.1"/><figcaption>r=0.1</figcaption></figure>
+            <figure><img src="static/mf/g1.jpg" alt="sub-goal at r=0.3"/><figcaption>r=0.3</figcaption></figure>
+            <figure><img src="static/mf/g2.jpg" alt="sub-goal at r=0.5"/><figcaption>r=0.5</figcaption></figure>
+            <figure><img src="static/mf/g3.jpg" alt="sub-goal at r=0.9"/><figcaption>r=0.9</figcaption></figure>
+          </div>
+          <div class="mf-chain-lbl">imagined sub-goals, indexed by progress</div>
+        </div>
+        <div class="mf-link"><span>actions attend to the chain</span></div>
+        <div class="mf-expert action">Action expert</div>
+        <div class="mf-acts">
+          <figure><img src="static/mf/a0.jpg" alt="executed frame"/></figure>
+          <figure><img src="static/mf/a1.jpg" alt="executed frame"/></figure>
+          <figure><img src="static/mf/a2.jpg" alt="executed frame"/></figure>
+          <figcaption>action chunk, executed</figcaption>
+        </div>
+      </div>
+    </div>
+    <p class="cap reveal">The video branch never attends to action tokens, so its sub-goal
+      features are computed once and reused while the action head is denoised. Trained in two
+      stages: sub-goals from <b>action-free video</b>, then video and action jointly on robot
       demonstrations.</p>
   </div>
 </section>
