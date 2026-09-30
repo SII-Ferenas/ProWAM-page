@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ProWAM — World Action Modeling with Progressive Visual Planning</title>
+<meta name="description" content="ProWAM jointly predicts robot actions and an ordered chain of progress-indexed visual sub-goals."/>
+<meta property="og:title" content="ProWAM: World Action Modeling with Progressive Visual Planning"/>
+<meta property="og:description" content="A world action model that imagines how a task unfolds, then grounds every action in that plan."/>
+<meta property="og:image" content="static/img/method.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="static/style.css"/>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<header class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <h1 class="title reveal">Pro<span class="grad">WAM</span></h1>
+    <p class="subtitle reveal">World Action Modeling with Progressive Visual Planning</p>
+
+    <div class="authors reveal">
+      <span>Fei Zhang<sup>1,2,3*</sup></span><span>Zhaochong An<sup>4</sup></span><span>Duncan Frost<sup>4</sup></span><span>Yikai Wang<sup>4</sup></span><span>Pengfei Liu<sup>1,2</sup></span><span>Ya Zhang<sup>1</sup></span><span>Michal Drozdzal<sup>3</sup></span><span>Amir Bar<sup>3</sup></span>
+    </div>
+    <div class="affil reveal">
+      <sup>1</sup>Shanghai Jiao Tong University &nbsp; <sup>2</sup>SII &nbsp; <sup>3</sup>Meta Super Intelligence (FAIR) &nbsp; <sup>4</sup>Meta
+      <div class="note"><sup>*</sup>Work done at Meta</div>
+    </div>
+
+    <nav class="links reveal">
+      <a class="btn primary" href="#">Paper</a>
+      <a class="btn" href="https://github.com/SII-Ferenas/ProWAM">Code</a>
+      <a class="btn" href="#">Models</a>
+      <a class="btn ghost" href="#method">Method ↓</a>
+    </nav>
+  </div>
+</header>
+
+<section class="teaser-band">
+  <div class="wrap narrow">
+    <div class="teaser-frame reveal">
+  <img class="teaser" src="static/gif/teaser.gif" alt="ProWAM first imagines progress-indexed sub-goals, then executes actions grounded in them"/>
+    </div>
+    <p class="cap reveal">ProWAM imagines <b>how</b> a task unfolds — an ordered chain of sub-goals indexed by
+      progress — then grounds every action in that plan.</p>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap">
+    <div class="grid-4">
+      <div class="stat reveal"><div class="num" data-to="85.8" data-suffix="%">0</div><div class="lab">LIBERO-Plus<span>zero-shot · SOTA</span></div></div>
+      <div class="stat reveal"><div class="num" data-to="75.7" data-suffix="%">0</div><div class="lab">RoboTwin<span>randomized</span></div></div>
+      <div class="stat reveal"><div class="num" data-to="70.0" data-suffix="%">0</div><div class="lab">Real robot<span>zero-shot, novel scenes</span></div></div>
+      <div class="stat reveal"><div class="num" data-to="48.1" data-suffix="%">0</div><div class="lab">RoboCasa365<span>overall · 4th on leaderboard</span></div></div>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<section class="sec">
+  <div class="wrap narrow">
+    <div class="eyebrow reveal">Results</div>
+    <h2 class="reveal">Strongest where it matters: out of distribution.</h2>
+    <p class="lead reveal"><b>LIBERO-Plus 85.8 is state of the art.</b> RoboCasa365 48.1 places
+      <b>4th</b> on the <a href="https://github.com/robocasa-benchmark/leaderboard">public
+      leaderboard</a> (29 Sep 2026), and the real-robot 70.0 beats the strongest baseline by
+      15 points.</p>
+  </div>
+  <div class="wrap narrow">
+    <div class="tbl reveal">
+      <table>
+        <thead><tr><th>Benchmark</th><th>Split</th><th>Success</th></tr></thead>
+        <tbody>
+          <tr><td>LIBERO</td><td><span class="sp seen">seen</span></td><td>98.8</td></tr>
+          <tr><td>RoboTwin</td><td><span class="sp seen">seen</span></td><td>85.8</td></tr>
+          <tr class="ours"><td>LIBERO-Plus</td><td><span class="sp unseen">unseen</span></td><td><b>85.8</b></td></tr>
+          <tr class="ours"><td>RoboTwin</td><td><span class="sp unseen">unseen</span> randomized</td><td><b>75.7</b></td></tr>
+          <tr class="ours"><td>RoboCasa365</td><td><span class="sp unseen">unseen</span> overall</td><td><b>48.1</b></td></tr>
+          <tr class="ours"><td>Real robot</td><td><span class="sp unseen">unseen</span> novel scenes</td><td><b>70.0</b></td></tr>
+        </tbody>
+      </table>
+      <p class="tbl-note">Full comparisons against prior work are in the paper.</p>
+    </div>
+  </div>
+</section>
+
+<section id="method" class="sec alt">
+  <div class="wrap narrow">
+    <div class="eyebrow reveal">The idea</div>
+    <h2 class="reveal">A single goal says <em>where</em>. A chain says <em>how</em>.</h2>
+    <p class="lead reveal">
+      World action models predict future visual dynamics and actions together. Dense video
+      rollouts are expensive; collapsing the future into one final-goal frame is cheap but
+      leaves the whole execution path unspecified. ProWAM sits between the two: a short,
+      <b>ordered chain of sparse sub-goals</b>, each pinned to a point along task progress.
+    </p>
+  </div>
+
+  <div class="wrap">
+    <figure class="fig reveal">
+      <img src="static/img/framework.png" alt="ProWAM framework"/>
+      <figcaption>Sub-goals are generated in a single cached forward pass, so replanning only
+        denoises the action head.</figcaption>
+    </figure>
+    <p class="cap reveal">Trained in two stages: sub-goal prediction is learned from
+      <b>action-free video</b>, then video and action are fine-tuned jointly on robot
+      demonstrations.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap narrow">
+    <div class="eyebrow reveal">Closed loop</div>
+    <h2 class="reveal">Progress is <em>relative</em>, so the plan re-anchors every replan.</h2>
+    <p class="lead reveal">
+      Four replan rounds per task, left to right. Each round imagines a sub-goal, then executes
+      toward it &mdash; and because <span class="k">r</span> is measured from the <b>current</b>
+      frame, the same <span class="k">r = 0.7</span> resolves to a new target every time. The
+      plan is not laid down once; it is re-grounded as the scene changes.
+    </p>
+  </div>
+  <div class="wrap">
+      <div class="cl-row reveal">
+        <div class="cl-row-head"><span class="sp seen">seen</span>&ldquo;put both the alphabet soup and the tomato sauce in the basket&rdquo;</div>
+        <div class="cl-strip">
+          <div class="cl-cell obs"><img src="static/cl/t1_obs.png" alt="first observation"/><span>observe</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t1_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t1_ex0.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t1_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t1_ex1.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t1_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t1_ex2.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t1_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t1_ex3.gif" alt="execution"/><span>execute</span></div>
+        </div>
+      </div>
+      <div class="cl-row reveal">
+        <div class="cl-row-head"><span class="sp seen">seen</span>&ldquo;pick up the cream cheese and place it in the basket&rdquo;</div>
+        <div class="cl-strip">
+          <div class="cl-cell obs"><img src="static/cl/t2_obs.png" alt="first observation"/><span>observe</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t2_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t2_ex0.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t2_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t2_ex1.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t2_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t2_ex2.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t2_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t2_ex3.gif" alt="execution"/><span>execute</span></div>
+        </div>
+      </div>
+      <div class="cl-row reveal">
+        <div class="cl-row-head"><span class="sp unseen">unseen</span>&ldquo;turn on the stove and put the moka pot on it&rdquo;</div>
+        <div class="cl-strip">
+          <div class="cl-cell obs"><img src="static/cl/t3_obs.png" alt="first observation"/><span>observe</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t3_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t3_ex0.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t3_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t3_ex1.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t3_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t3_ex2.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t3_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t3_ex3.gif" alt="execution"/><span>execute</span></div>
+        </div>
+      </div>
+      <div class="cl-row reveal">
+        <div class="cl-row-head"><span class="sp unseen">unseen</span>&ldquo;open the middle drawer of the cabinet&rdquo;</div>
+        <div class="cl-strip">
+          <div class="cl-cell obs"><img src="static/cl/t4_obs.png" alt="first observation"/><span>observe</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t4_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t4_ex0.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t4_sg1.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t4_ex1.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t4_sg2.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t4_ex2.gif" alt="execution"/><span>execute</span></div>
+          <div class="cl-cell imagine"><img src="static/cl/t4_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
+          <div class="cl-cell exec"><img src="static/cl/t4_ex3.gif" alt="execution"/><span>execute</span></div>
+        </div>
+      </div>
+    <div class="cl-legend"><span class="d obs"></span>observation<span class="d imagine"></span>imagined sub-goal<span class="d exec"></span>execution</div>
+  </div>
+</section>
+
+<section class="sec alt">
+  <div class="wrap narrow">
+    <div class="eyebrow reveal">Progressive planning emerges</div>
+    <h2 class="reveal">The video expert plans on domains it never trained on.</h2>
+    <p class="lead reveal">
+      Stage 1 sees only action-free video. Given a first frame and an instruction it is asked
+      for sub-goals at <span class="k">r = 0.1 &hellip; 0.9</span> &mdash; and the imagined
+      milestones track the real trajectory even on <b>LIBERO and RoboTwin, which it never saw
+      in training</b>. No action labels, no policy, no simulator in the loop.
+    </p>
+  </div>
+  <div class="wrap">
+    <div class="emerge-grid">
+      <figure class="emerge reveal">
+        <div class="emerge-head"><span class="dom">LIBERO</span><span class="split unseen">unseen</span></div>
+        <div class="emerge-pair">
+          <div><img src="static/gif/emerge/libero_ep13_gen.gif" alt="LIBERO generated sub-goals"/><span>generated</span></div>
+          <div><img src="static/gif/emerge/libero_ep13_gt.gif" alt="LIBERO ground truth"/><span>ground truth</span></div>
+        </div>
+        <figcaption>&ldquo;put the bowl on the stove&rdquo;</figcaption>
+      </figure>
+      <figure class="emerge reveal">
+        <div class="emerge-head"><span class="dom">LIBERO</span><span class="split unseen">unseen</span></div>
+        <div class="emerge-pair">
+          <div><img src="static/gif/emerge/libero_ep1_gen.gif" alt="LIBERO generated sub-goals"/><span>generated</span></div>
+          <div><img src="static/gif/emerge/libero_ep1_gt.gif" alt="LIBERO ground truth"/><span>ground truth</span></div>
+        </div>
+        <figcaption>&ldquo;put the wine bottle on the rack&rdquo;</figcaption>
+      </figure>
+      <figure class="emerge reveal">
+        <div class="emerge-head"><span class="dom">RoboTwin</span><span class="split unseen">unseen</span></div>
+        <div class="emerge-pair">
+          <div><img src="static/gif/emerge/robotwin_ep16000_gen.gif" alt="RoboTwin generated sub-goals"/><span>generated</span></div>
+          <div><img src="static/gif/emerge/robotwin_ep16000_gt.gif" alt="RoboTwin ground truth"/><span>ground truth</span></div>
+        </div>
+        <figcaption>&ldquo;Make sure the light blue cup ends up on the round wooden coaster.&rdquo;</figcaption>
+      </figure>
+      <figure class="emerge reveal">
+        <div class="emerge-head"><span class="dom">RoboTwin</span><span class="split unseen">unseen</span></div>
+        <div class="emerge-pair">
+          <div><img src="static/gif/emerge/robotwin_ep26000_gen.gif" alt="RoboTwin generated sub-goals"/><span>generated</span></div>
+          <div><img src="static/gif/emerge/robotwin_ep26000_gt.gif" alt="RoboTwin ground truth"/><span>ground truth</span></div>
+        </div>
+        <figcaption>&ldquo;Hold the ceramic bowl steady and slide the food bowl on.&rdquo;</figcaption>
+      </figure>
+      <figure class="emerge reveal">
+        <div class="emerge-head"><span class="dom">LIBERO</span><span class="split unseen">unseen</span></div>
+        <div class="emerge-pair">
+          <div><img src="static/gif/emerge/libero_ep15_gen.gif" alt="LIBERO generated sub-goals"/><span>generated</span></div>
+          <div><img src="static/gif/emerge/libero_ep15_gt.gif" alt="LIBERO ground truth"/><span>ground truth</span></div>
+        </div>
+        <figcaption>&ldquo;put the bowl on the stove&rdquo;</figcaption>
+      </figure>
+      <figure class="emerge reveal">
+        <div class="emerge-head"><span class="dom">DROID</span><span class="split seen">seen</span></div>
+        <div class="emerge-pair">
+          <div><img src="static/gif/emerge/droid_ep1000_gen.gif" alt="DROID generated sub-goals"/><span>generated</span></div>
+          <div><img src="static/gif/emerge/droid_ep1000_gt.gif" alt="DROID ground truth"/><span>ground truth</span></div>
+        </div>
+        <figcaption>&ldquo;Push the top of the bottle on the left of the tap&rdquo;</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap narrow">
+    <div class="eyebrow reveal">Ablations</div>
+    <h2 class="reveal">Nearer plans generalize better. More sub-goals are nearly free.</h2>
+  </div>
+  <div class="wrap">
+    <div class="grid-3">
+      <figure class="fig small reveal"><img src="static/img/abl_a.png" alt="Efficiency vs robustness"/>
+        <figcaption><b>Efficiency.</b> ProWAM reaches 75.7% OOD at lower cost than competing
+        imagination strategies.</figcaption></figure>
+      <figure class="fig small reveal"><img src="static/img/abl_b.png" alt="Sub-goal count"/>
+        <figcaption><b>Sub-goal count.</b> One model trained with k∈{1..4} serves all four;
+        k=1→4 adds only 3.5 TFLOPs.</figcaption></figure>
+      <figure class="fig small reveal"><img src="static/img/abl_c.png" alt="Planning horizon"/>
+        <figcaption><b>Horizon.</b> Near (68.4→75.7) beats Far monotonically; ID stays flat
+        near 86%.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec cite-sec">
+  <div class="wrap narrow">
+    <h2 class="reveal">BibTeX</h2>
+    <pre class="bib reveal"><code>@inproceedings{zhang2027prowam,
+  title     = {World Action Modeling with Progressive Visual Planning},
+  author    = {Zhang, Fei and An, Zhaochong and Frost, Duncan and Wang, Yikai
+               and Liu, Pengfei and Zhang, Ya and Drozdzal, Michal and Bar, Amir},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2027}
+}</code></pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap narrow">
+    <p>Built on a modified <a href="https://github.com/modelscope/DiffSynth-Studio">DiffSynth-Studio</a>
+       engine. Code released under Apache 2.0.</p>
+  </div>
+</footer>
+
+<script src="static/main.js"></script>
+</body>
+</html>
