@@ -169,6 +169,13 @@
       }
     }
     if (pts.length < 40) return;
+    // The particle assembly *is* this heading's entrance, so take it out of the
+    // reveal system -- otherwise reveal's translateY(20px) fires afterwards and
+    // yanks the settled word upward.
+    h1.classList.remove('reveal');
+    h1.classList.add('in');
+    h1.style.transform = 'none';
+
     // Park the canvas exactly over the heading; the h1 keeps its box.
     var r = h1.getBoundingClientRect(), pr = h1.offsetParent.getBoundingClientRect();
     cv.style.top = (r.top - pr.top + (r.height - H) / 2) + 'px';
