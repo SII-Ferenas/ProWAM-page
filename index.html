@@ -100,15 +100,41 @@
   </div>
 
   <div class="wrap">
-    <figure class="fig reveal">
-      <img src="static/img/framework.png" alt="ProWAM architecture: a video expert and an action expert share attention; sub-goals are indexed by progress"/>
-    </figure>
-    <p class="cap reveal">The video branch never attends to action tokens, so its sub-goal
-      features are computed once and reused while the action head is denoised. Trained in two
-      stages: sub-goals from <b>action-free video</b>, then video and action jointly on robot
-      demonstrations.</p>
-  </div>
-</section>
+      <div class="arch reveal">
+        <div class="arch-in">
+          <img src="static/mf/obs.jpg" alt="current observation"/>
+          <b>observation</b>
+          <i>&ldquo;put the soup in the basket&rdquo;</i>
+        </div>
+        <div class="arch-flow">
+          <div class="arch-lane blue">
+            <div class="arch-tag">Video expert &mdash; imagines</div>
+            <div class="arch-strip">
+              <figure><img src="static/mf/g0.jpg" alt="sub-goal"/><figcaption>r = 0.1</figcaption></figure>
+              <figure><img src="static/mf/g1.jpg" alt="sub-goal"/><figcaption>r = 0.3</figcaption></figure>
+              <figure><img src="static/mf/g2.jpg" alt="sub-goal"/><figcaption>r = 0.5</figcaption></figure>
+              <figure><img src="static/mf/g3.jpg" alt="sub-goal"/><figcaption>r = 0.9</figcaption></figure>
+            </div>
+          </div>
+          <div class="arch-bridge"><span>actions read the chain &mdash; the chain never reads actions</span></div>
+          <div class="arch-lane red">
+            <div class="arch-tag">Action expert &mdash; executes</div>
+            <div class="arch-strip">
+              <figure><img src="static/mf/a0.jpg" alt="executed frame"/></figure>
+              <figure><img src="static/mf/a1.jpg" alt="executed frame"/></figure>
+              <figure><img src="static/mf/a2.jpg" alt="executed frame"/></figure>
+              <figure><img src="static/mf/a3.jpg" alt="executed frame"/></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="arch-stages reveal">
+        <div><b>Stage 1</b><span>action-free video</span></div>
+        <div><b>Stage 2</b><span>+ robot demonstrations</span></div>
+        <div class="inf"><b>Inference</b><span>video pass cached, actions denoised</span></div>
+      </div>
+    </div>
+  </section>
 
 <section class="sec">
   <div class="wrap narrow">
