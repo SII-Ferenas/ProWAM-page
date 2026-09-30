@@ -358,6 +358,29 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .hero-fx{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0}
 .hero .wrap{position:relative; z-index:1}
 
+.mot{display:grid; grid-template-columns:1.25fr 1fr; gap:18px; margin-top:18px}
+.mot-panel{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px}
+.mot-panel h4{margin:0 0 15px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim); font-weight:600}
+.mot-row{display:flex; align-items:center; gap:6px; margin-bottom:9px; flex-wrap:wrap}
+.mot-row i{font-style:normal; font-size:10.5px; color:var(--dim); width:88px; flex:0 0 auto; letter-spacing:.04em}
+.tok{font-family:"JetBrains Mono",monospace; font-size:11px; padding:5px 10px; border-radius:7px; border:1px solid}
+.tok.o{color:var(--fg); border-color:#4a5260; background:#171a22}
+.tok.v{color:#9fb4c4; border-color:#2f4756; background:rgba(0,162,232,.06)}
+.tok.g{color:var(--blue-soft); border-color:rgba(0,162,232,.55); background:rgba(0,162,232,.13)}
+.tok.a{color:var(--red-soft); border-color:rgba(220,30,30,.5); background:rgba(220,30,30,.11)}
+.mot-mask{list-style:none; padding:0; margin:15px 0 0; font-size:11.5px; color:var(--muted); line-height:1.95}
+.mot-mask b.b{color:var(--blue-soft)} .mot-mask b.r{color:var(--red-soft)}
+.mot-mask s{color:var(--dim)}
+.mot-stages{list-style:none; counter-reset:s; padding:0; margin:0; display:flex; flex-direction:column; gap:12px}
+.mot-stages li{display:grid; grid-template-columns:auto 1fr; gap:3px 10px; padding-left:14px; border-left:2px solid #2a3038}
+.mot-stages li.inf{border-left-color:var(--red)}
+.mot-stages li:first-child{border-left-color:var(--blue)}
+.mot-stages li:nth-child(2){border-left-color:#7a5fa8}
+.mot-stages b{font-size:12.5px; color:var(--fg)}
+.mot-stages span{font-size:11px; color:var(--blue-soft); align-self:center}
+.mot-stages em{grid-column:1/-1; font-style:normal; font-size:11px; color:var(--dim)}
+@media (max-width:860px){.mot{grid-template-columns:1fr}}
+
 /* ---------- bibtex ---------- */
 .cite-sec{padding-bottom:96px}
 .bib{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
