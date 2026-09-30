@@ -132,6 +132,64 @@
     }
   }
 
+  // --- hero particles: drift left-to-right, blue into red ----------------
+  var fx = document.querySelector('.hero-fx');
+  if (fx && !reduced) {
+    var hero = fx.parentElement, ctx = fx.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 0, H = 0, parts = [], raf = null;
+
+    function size() {
+      W = hero.offsetWidth; H = hero.offsetHeight;
+      fx.width = W * dpr; fx.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function seed() {
+      // Scale with area so a wide hero is not sparse and a phone is not busy.
+      var n = Math.round(Math.min(120, Math.max(38, (W * H) / 11000)));
+      parts = [];
+      for (var i = 0; i < n; i++) {
+        parts.push({ x: Math.random() * W, y: Math.random() * H,
+                     r: Math.random() * 1.7 + 0.5,
+                     v: Math.random() * 0.24 + 0.06,
+                     a: Math.random() * 0.45 + 0.12,
+                     ph: Math.random() * Math.PI * 2 });
+      }
+    }
+    function draw(ts) {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i];
+        p.x += p.v;
+        p.y += Math.sin((ts / 2600) + p.ph) * 0.16;
+        if (p.x > W + 6) { p.x = -6; p.y = Math.random() * H; }
+        // Hue follows horizontal position: imagination on the left, action right.
+        var f = p.x / W;
+        var cr = Math.round(0 + f * 220), cg = Math.round(162 - f * 132), cb = Math.round(232 - f * 202);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + cr + ',' + cg + ',' + cb + ',' + p.a + ')';
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    }
+    function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+    function go() { if (!raf) raf = requestAnimationFrame(draw); }
+
+    size(); seed(); go();
+    var rt; window.addEventListener('resize', function () {
+      clearTimeout(rt); rt = setTimeout(function () { size(); seed(); }, 150);
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { e.isIntersecting ? go() : stop(); });
+      }, { threshold: 0 }).observe(hero);
+    }
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? stop() : go();
+    });
+  }
+
   // --- sub-goal viewer: autoplays, yields to the slider, any K -----------
   document.querySelectorAll('.sgv').forEach(function (v) {
     var frames, rs;
