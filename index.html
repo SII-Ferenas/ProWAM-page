@@ -101,63 +101,9 @@
   </div>
 
   <div class="wrap">
-    <div class="mf reveal">
-      <div class="mf-col mf-in">
-        <div class="mf-tile"><img src="static/mf/obs.jpg" alt="current observation"/><b>observation</b></div>
-        <div class="mf-prompt">&ldquo;put the bowl on the stove&rdquo;</div>
-      </div>
-
-      <div class="mf-arrow"><span></span></div>
-
-      <div class="mf-col mf-mid">
-        <div class="mf-expert video">Video expert</div>
-        <div class="mf-chain">
-          <div class="mf-rail"></div>
-          <div class="mf-goals">
-            <figure><img src="static/mf/g0.jpg" alt="sub-goal at r=0.1"/><figcaption>r=0.1</figcaption></figure>
-            <figure><img src="static/mf/g1.jpg" alt="sub-goal at r=0.3"/><figcaption>r=0.3</figcaption></figure>
-            <figure><img src="static/mf/g2.jpg" alt="sub-goal at r=0.5"/><figcaption>r=0.5</figcaption></figure>
-            <figure><img src="static/mf/g3.jpg" alt="sub-goal at r=0.9"/><figcaption>r=0.9</figcaption></figure>
-          </div>
-          <div class="mf-chain-lbl">imagined sub-goals, indexed by progress</div>
-        </div>
-        <div class="mf-link"><span>actions attend to the chain</span></div>
-        <div class="mf-expert action">Action expert</div>
-        <div class="mf-acts">
-          <figure><img src="static/mf/a0.jpg" alt="executed frame"/></figure>
-          <figure><img src="static/mf/a1.jpg" alt="executed frame"/></figure>
-          <figure><img src="static/mf/a2.jpg" alt="executed frame"/></figure>
-          <figcaption>action chunk, executed</figcaption>
-        </div>
-      </div>
-    <div class="mot reveal">
-      <div class="mot-panel">
-        <h4>Mixture of transformers</h4>
-        <div class="mot-rows">
-          <div class="mot-row v"><i>video expert</i>
-            <span class="tok o">X&#8320;</span><span class="tok v">X</span><span class="tok v">X</span>
-            <span class="tok g">G&#8321;</span><span class="tok g">G&#8342;</span>
-          </div>
-          <div class="mot-row a"><i>action expert</i>
-            <span class="tok a">A&#8320;</span><span class="tok a">A&#8321;</span><span class="tok a">A&#8341;</span>
-          </div>
-        </div>
-        <ul class="mot-mask">
-          <li><b class="b">G &#8596; G</b>, G &#8594; X&#8320;</li>
-          <li><b class="r">A &#8594; X&#8320;, G</b></li>
-          <li><s>X &#8594; A</s> &mdash; video never sees actions</li>
-        </ul>
-      </div>
-      <div class="mot-panel">
-        <h4>Training &amp; inference</h4>
-        <ol class="mot-stages">
-          <li><b>Stage 1</b><span>action-free video</span><em>video expert only, sub-goal loss</em></li>
-          <li><b>Stage 2</b><span>robot demos</span><em>both experts, + action loss</em></li>
-          <li class="inf"><b>Inference</b><span>closed loop</span><em>video pass cached, action head denoised</em></li>
-        </ol>
-      </div>
-    </div>
-    </div>
+    <figure class="fig reveal">
+      <img src="static/img/framework.png" alt="ProWAM architecture: a video expert and an action expert share attention; sub-goals are indexed by progress"/>
+    </figure>
     <p class="cap reveal">The video branch never attends to action tokens, so its sub-goal
       features are computed once and reused while the action head is denoised. Trained in two
       stages: sub-goals from <b>action-free video</b>, then video and action jointly on robot
