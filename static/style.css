@@ -381,6 +381,10 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .mot-stages em{grid-column:1/-1; font-style:normal; font-size:11px; color:var(--dim)}
 @media (max-width:860px){.mot{grid-template-columns:1fr}}
 
+#proFx{display:none; margin:0 auto 14px; max-width:100%}
+.fx-on #proTitle{visibility:hidden; position:absolute; pointer-events:none}
+.fx-on #proFx{display:block}
+
 /* ---------- bibtex ---------- */
 .cite-sec{padding-bottom:96px}
 .bib{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);

@@ -132,6 +132,73 @@
     }
   }
 
+  // --- title: particles explode outward, then settle into "ProWAM" -------
+  (function () {
+    var h1 = document.getElementById('proTitle'), cv = document.getElementById('proFx');
+    if (!h1 || !cv || reduced) return;
+
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cs = getComputedStyle(h1);
+    var fs = parseFloat(cs.fontSize);
+    var W = Math.ceil(h1.getBoundingClientRect().width);
+    var H = Math.ceil(fs * 1.22);
+    if (!W || !fs) return;
+
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    cv.width = W * dpr; cv.height = H * dpr;
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Stamp the word once, then read it back as a point cloud.
+    var off = document.createElement('canvas');
+    off.width = W; off.height = H;
+    var oc = off.getContext('2d');
+    oc.fillStyle = '#fff';
+    oc.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
+    oc.textBaseline = 'middle';
+    oc.fillText('ProWAM', 0, H / 2);
+
+    var data = oc.getImageData(0, 0, W, H).data;
+    var step = W > 700 ? 4 : 3, pts = [];
+    for (var y = 0; y < H; y += step) {
+      for (var x = 0; x < W; x += step) {
+        if (data[(y * W + x) * 4 + 3] > 128) pts.push([x, y]);
+      }
+    }
+    if (pts.length < 40) return;
+    document.body.classList.add('fx-on');
+
+    var ps = pts.map(function (q) {
+      var ang = Math.random() * Math.PI * 2, rad = 90 + Math.random() * 320;
+      return { tx: q[0], ty: q[1],
+               x: q[0] + Math.cos(ang) * rad, y: q[1] + Math.sin(ang) * rad,
+               d: 0.055 + Math.random() * 0.05, r: step * 0.46 };
+    });
+
+    var t0 = null, done = false;
+    function frame(ts) {
+      if (t0 === null) t0 = ts;
+      ctx.clearRect(0, 0, W, H);
+      var settled = 0;
+      for (var i = 0; i < ps.length; i++) {
+        var p = ps[i];
+        p.x += (p.tx - p.x) * p.d;
+        p.y += (p.ty - p.y) * p.d;
+        if (Math.abs(p.tx - p.x) < 0.6 && Math.abs(p.ty - p.y) < 0.6) settled++;
+        var f = p.tx / W;
+        ctx.fillStyle = 'rgb(' + Math.round(f * 220) + ',' + Math.round(162 - f * 132) + ',' + Math.round(232 - f * 202) + ')';
+        ctx.fillRect(p.x, p.y, p.r * 2, p.r * 2);
+      }
+      if (settled / ps.length > 0.985 && ts - t0 > 900) done = true;
+      if (!done) requestAnimationFrame(frame);
+      else {
+        // Hand back to real text so it stays selectable and sharp.
+        document.body.classList.remove('fx-on');
+      }
+    }
+    requestAnimationFrame(frame);
+  })();
+
   // --- hero particles: drift left-to-right, blue into red ----------------
   var fx = document.querySelector('.hero-fx');
   if (fx && !reduced) {
