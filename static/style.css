@@ -321,6 +321,40 @@ tbody tr.ours td b{color:var(--blue-soft)}
   .mf.run .mf-rail::after,.mf.run .mf-goals figure img,.mf.run .mf-acts figure img{animation:none}
 }
 
+.scrub-card .task{display:block; font-size:11px; color:var(--muted); font-style:italic;
+  margin-top:8px; line-height:1.4; min-height:30px}
+.scrub-card .dom{margin-top:3px}
+
+/* ---------- sub-goal viewer (shared by every K) ---------- */
+.sgv{margin-top:34px}
+.sgv-stage{display:grid; grid-template-columns:auto 1fr auto; gap:22px; align-items:center}
+.sgv-side img{width:108px; height:108px; object-fit:cover; border-radius:9px; display:block}
+.sgv-side:first-child img{border:2px solid #5a6474}
+.sgv-side:last-child img{border:2px solid var(--red); box-shadow:0 0 15px rgba(220,30,30,.26)}
+.sgv-side span{display:block; text-align:center; font-size:9.5px; color:var(--dim);
+  margin-top:5px; letter-spacing:.05em; text-transform:uppercase}
+.sgv-main{text-align:center}
+.sgv-main img{width:100%; max-width:340px; aspect-ratio:1; object-fit:cover; border-radius:11px;
+  border:2px solid var(--blue); box-shadow:0 0 22px rgba(0,162,232,.28); display:block; margin:0 auto}
+.sgv-cap{display:block; font-size:12px; color:var(--blue-soft); margin-top:9px}
+.sgv-cap b{font-family:"JetBrains Mono",monospace}
+.kbadge{font-style:normal; font-family:"JetBrains Mono",monospace; font-size:11px;
+  color:var(--blue-soft); border:1px solid rgba(0,162,232,.35); border-radius:100px; padding:2px 9px}
+.sgv-ctl{display:flex; align-items:center; gap:14px; margin-top:16px}
+.sgv-play{width:30px; height:30px; flex:0 0 auto; border-radius:50%; cursor:pointer;
+  background:transparent; border:1px solid var(--line); color:var(--muted); font-size:9px;
+  line-height:1; font-family:inherit}
+.sgv-play.paused{color:var(--blue-soft); border-color:rgba(0,162,232,.5)}
+.sgv-range{flex:1; -webkit-appearance:none; appearance:none; height:4px; border-radius:100px;
+  background:linear-gradient(90deg,var(--blue),var(--red)); outline:none}
+.sgv-range::-webkit-slider-thumb{-webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--fg); cursor:pointer; border:3px solid var(--bg)}
+.sgv-range::-moz-range-thumb{width:16px; height:16px; border-radius:50%; background:var(--fg);
+  cursor:pointer; border:3px solid var(--bg)}
+.sgv-val{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--dim); min-width:48px;
+  text-align:right}
+@media (max-width:760px){.sgv-stage{grid-template-columns:1fr}}
+
 /* ---------- bibtex ---------- */
 .cite-sec{padding-bottom:96px}
 .bib{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);

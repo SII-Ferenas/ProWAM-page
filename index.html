@@ -190,6 +190,19 @@
         </div>
         <div class="cl-line"><div class="cl-line-fill"></div></div>
       </div>
+      <div class="sgv reveal" data-frames='["static/rc/sg0.jpg","static/rc/sg1.jpg","static/rc/sg2.jpg","static/rc/sg3.jpg","static/rc/sg4.jpg","static/rc/sg5.jpg"]' data-r='"0.3","0.4","0.5","0.65","0.8","0.9"'>
+        <div class="cl-row-head"><span class="sp seen">RoboCasa365</span>&ldquo;Pick the kettle from the counter and place it on a stove burner&rdquo; <em class="kbadge">K = 6</em></div>
+        <div class="sgv-stage">
+          <div class="sgv-side"><img src="static/rc/ob.jpg" alt="observation"/><span>observe</span></div>
+          <div class="sgv-main"><img class="sgv-img" src="static/rc/sg0.jpg" alt="imagined sub-goal"/><span class="sgv-cap">imagine <b>r = 0.3</b></span></div>
+          <div class="sgv-side"><img src="static/rc/ex.gif" alt="execution"/><span>execute</span></div>
+        </div>
+        <div class="sgv-ctl">
+          <button class="sgv-play" aria-label="pause">&#10073;&#10073;</button>
+          <input class="sgv-range" type="range" min="0" max="5" step="1" value="0" aria-label="sub-goal progress"/>
+          <span class="sgv-val">1 / 6</span>
+        </div>
+      </div>
     <div class="cl-legend"><span class="d obs"></span>observation<span class="d imagine"></span>imagined sub-goal<span class="d exec"></span>execution</div>
   </div>
 </section>
@@ -197,7 +210,7 @@
 <section class="sec alt">
   <div class="wrap narrow">
     <div class="eyebrow reveal">Progressive planning emerges</div>
-    <h2 class="reveal">The video expert plans on domains it never trained on.</h2>
+    <h2 class="reveal">Planning that was never taught, only learned.</h2>
     <p class="lead reveal">
       Stage 1 sees only action-free video &mdash; no actions, no policy, no simulator. Given a
       first frame and an instruction it is asked for the scene at a chosen progress point.
@@ -210,23 +223,23 @@
       <div class="scrub-grid">
         <div class="scrub-card" data-key="libero_ep13">
           <img class="gen" src="static/em/libero_ep13_f0.jpg" alt="LIBERO imagined sub-goal"/>
-          <span class="dom">LIBERO</span><span class="sp unseen">unseen</span>
+          <span class="task">&ldquo;put the bowl on the stove&rdquo;</span><span class="dom">LIBERO</span><span class="sp unseen">unseen</span>
         </div>
         <div class="scrub-card" data-key="libero_ep1">
           <img class="gen" src="static/em/libero_ep1_f0.jpg" alt="LIBERO imagined sub-goal"/>
-          <span class="dom">LIBERO</span><span class="sp unseen">unseen</span>
+          <span class="task">&ldquo;put the wine bottle on the rack&rdquo;</span><span class="dom">LIBERO</span><span class="sp unseen">unseen</span>
         </div>
         <div class="scrub-card" data-key="robotwin_ep16000">
           <img class="gen" src="static/em/robotwin_ep16000_f0.jpg" alt="RoboTwin imagined sub-goal"/>
-          <span class="dom">RoboTwin</span><span class="sp unseen">unseen</span>
+          <span class="task">&ldquo;put the light blue cup on the wooden coaster&rdquo;</span><span class="dom">RoboTwin</span><span class="sp unseen">unseen</span>
         </div>
         <div class="scrub-card" data-key="robotwin_ep26000">
           <img class="gen" src="static/em/robotwin_ep26000_f0.jpg" alt="RoboTwin imagined sub-goal"/>
-          <span class="dom">RoboTwin</span><span class="sp unseen">unseen</span>
+          <span class="task">&ldquo;slide the food bowl onto the ceramic bowl&rdquo;</span><span class="dom">RoboTwin</span><span class="sp unseen">unseen</span>
         </div>
         <div class="scrub-card" data-key="droid_ep1000">
           <img class="gen" src="static/em/droid_ep1000_f0.jpg" alt="DROID imagined sub-goal"/>
-          <span class="dom">DROID</span><span class="sp seen">seen</span>
+          <span class="task">&ldquo;push the top of the bottle left of the tap&rdquo;</span><span class="dom">DROID</span><span class="sp seen">seen</span>
         </div>
       </div>
       <div class="scrub-ctl">
@@ -234,8 +247,8 @@
         <input type="range" id="scrubRange" min="0" max="5" step="1" value="0"/>
         <span class="scrub-val" id="scrubVal">r = 0</span>
       </div>
-      <div class="scrub-toggle">
-        <button data-mode="gen" class="on">imagined</button>
+      <div class="scrub-toggle"><button data-mode="auto" class="on">auto</button>
+        <button data-mode="gen">imagined</button>
         <button data-mode="gt">ground truth</button>
       </div>
     </div>

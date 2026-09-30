@@ -128,7 +128,68 @@
     }
   }
 
-  // --- progress scrubber --------------------------------------------------
+  // --- sub-goal viewer: autoplays, yields to the slider, any K -----------
+  document.querySelectorAll('.sgv').forEach(function (v) {
+    var frames, rs;
+    try {
+      frames = JSON.parse(v.dataset.frames);
+      rs = JSON.parse(v.dataset.r);
+    } catch (e) { return; }
+    if (!frames.length) return;
+
+    var img = v.querySelector('.sgv-img');
+    var cap = v.querySelector('.sgv-cap');
+    var range = v.querySelector('.sgv-range');
+    var val = v.querySelector('.sgv-val');
+    var play = v.querySelector('.sgv-play');
+    var timer = null;
+
+    frames.forEach(function (src) { var im = new Image(); im.src = src; });
+    range.max = frames.length - 1;
+
+    function show(i) {
+      img.src = frames[i];
+      cap.innerHTML = 'imagine <b>r = ' + rs[i] + '</b>';
+      val.textContent = (i + 1) + ' / ' + frames.length;
+    }
+    function start() {
+      if (timer || reduced) return;
+      play.classList.remove('paused');
+      play.innerHTML = '&#10073;&#10073;';
+      play.setAttribute('aria-label', 'pause');
+      timer = setInterval(function () {
+        range.value = (parseInt(range.value, 10) + 1) % frames.length;
+        show(parseInt(range.value, 10));
+      }, 1000);
+    }
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+      play.classList.add('paused');
+      play.innerHTML = '&#9654;';
+      play.setAttribute('aria-label', 'play');
+    }
+
+    // Grabbing the slider hands control over; the button gives it back.
+    ['input', 'pointerdown'].forEach(function (ev) {
+      range.addEventListener(ev, function () { stop(); show(parseInt(range.value, 10)); });
+    });
+    play.addEventListener('click', function () { timer ? stop() : start(); });
+
+    show(0);
+    if (reduced) { stop(); return; }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          // Only resume automatically if the reader has not taken over.
+          if (e.isIntersecting && !play.classList.contains('paused')) start();
+          else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
+        });
+      }, { threshold: 0.35 });
+      io.observe(v);
+    } else { start(); }
+  });
+
+  // --- progress scrubber: plays itself until you grab it -----------------
   var scrub = document.querySelector('.scrub');
   if (scrub) {
     var range = scrub.querySelector('#scrubRange');
@@ -136,9 +197,8 @@
     var cards = scrub.querySelectorAll('.scrub-card');
     var buttons = scrub.querySelectorAll('.scrub-toggle button');
     var R = ['0', '0.1', '0.3', '0.5', '0.7', '0.9'];
-    var mode = 'gen';
+    var mode = 'gen', auto = null;
 
-    // Preload so dragging does not flash placeholder gaps.
     cards.forEach(function (c) {
       var k = c.dataset.key;
       ['g', 't'].forEach(function (m) {
@@ -150,23 +210,46 @@
       var idx = parseInt(range.value, 10);
       out.textContent = 'r = ' + R[idx];
       cards.forEach(function (c) {
-        var k = c.dataset.key;
-        var img = c.querySelector('img');
-        // index 0 is the shared first frame; 1..5 map to the five progress points
+        var k = c.dataset.key, img = c.querySelector('img');
         img.src = idx === 0 ? 'static/em/' + k + '_f0.jpg'
                             : 'static/em/' + k + '_' + (mode === 'gen' ? 'g' : 't') + (idx - 1) + '.jpg';
-        img.classList.toggle('gen', mode === 'gen');
       });
     }
 
-    range.addEventListener('input', render);
+    function stopAuto() {
+      if (auto) { clearInterval(auto); auto = null; }
+      scrub.querySelector('[data-mode="auto"]').classList.remove('on');
+    }
+    function startAuto() {
+      if (auto || reduced) return;
+      scrub.querySelector('[data-mode="auto"]').classList.add('on');
+      auto = setInterval(function () {
+        range.value = (parseInt(range.value, 10) + 1) % R.length;
+        render();
+      }, 1100);
+    }
+
+    // Touching the slider hands control over; the auto chip takes it back.
+    ['input', 'pointerdown'].forEach(function (ev) {
+      range.addEventListener(ev, function () { stopAuto(); render(); });
+    });
     buttons.forEach(function (b) {
       b.addEventListener('click', function () {
+        if (b.dataset.mode === 'auto') { startAuto(); return; }
         mode = b.dataset.mode;
-        buttons.forEach(function (x) { x.classList.toggle('on', x === b); });
+        buttons.forEach(function (x) {
+          if (x.dataset.mode !== 'auto') x.classList.toggle('on', x === b);
+        });
         render();
       });
     });
+
     render();
+    if (!reduced && 'IntersectionObserver' in window) {
+      var sio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { startAuto(); } else { stopAuto(); } });
+      }, { threshold: 0.3 });
+      sio.observe(scrub);
+    }
   }
 })();
