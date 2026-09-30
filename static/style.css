@@ -13,8 +13,8 @@
   --red:#dc1e1e;
   --red-soft:#f1a29f;
   --radius:16px;
-  --maxw:1180px;
-  --narrow:820px;
+  --maxw:1440px;
+  --narrow:1080px;
 }
 
 *{box-sizing:border-box}
@@ -30,6 +30,7 @@ a:hover{text-decoration:underline}
 
 .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
 .wrap.narrow{max-width:var(--narrow)}
+.lead, .wrap.narrow > h2, .wrap.narrow > .eyebrow{max-width:760px}
 
 /* ---------- scroll progress ---------- */
 .progress-rail{position:fixed; top:0; left:0; right:0; height:3px; z-index:100; background:transparent}
