@@ -73,29 +73,36 @@
     io.observe(el);
   });
 
-  // --- closed-loop rows: cycle one replan at a time ----------------------
+  // --- closed-loop rows: accumulate, hold, then restart -------------------
   document.querySelectorAll('.cl-row').forEach(function (row) {
     var rounds = row.querySelectorAll('.cl-round');
     var fill = row.querySelector('.cl-line-fill');
     var i = 0, timer = null;
 
     function tick() {
-      rounds.forEach(function (r, k) { r.classList.toggle('on', k === i); });
-      if (fill) fill.style.width = ((i + 0.5) / rounds.length) * 100 + '%';
-      i = (i + 1) % rounds.length;
+      if (i < rounds.length) {
+        // A rollout happens in order and does not un-happen, so completed
+        // rounds stay lit rather than dimming as the next one starts.
+        rounds[i].classList.add('on');
+        if (fill) fill.style.width = ((i + 1) / rounds.length) * 100 + '%';
+        i++;
+      } else {
+        rounds.forEach(function (r) { r.classList.remove('on'); });
+        if (fill) fill.style.width = '0%';
+        i = 0;
+      }
     }
 
-    if (reduced) {
+    function lightAll() {
       rounds.forEach(function (r) { r.classList.add('on'); });
       if (fill) fill.style.width = '100%';
-      return;
     }
-    if (!('IntersectionObserver' in window)) { rounds.forEach(function (r) { r.classList.add('on'); }); return; }
+
+    if (reduced || !('IntersectionObserver' in window)) { lightAll(); return; }
 
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
-        // Pause off-screen so four rows are not animating out of view.
-        if (e.isIntersecting && !timer) { tick(); timer = setInterval(tick, 1250); }
+        if (e.isIntersecting && !timer) { tick(); timer = setInterval(tick, 1900); }
         else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
       });
     }, { threshold: 0.2 });
