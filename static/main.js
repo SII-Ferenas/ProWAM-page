@@ -72,26 +72,74 @@
     io.observe(el);
   });
 
-  // --- closed-loop rows: sweep once, then leave everything lit ------------
+  // --- closed-loop rows: cycle one replan at a time ----------------------
   document.querySelectorAll('.cl-row').forEach(function (row) {
-    var cells = row.querySelectorAll('.cl-cell');
-    function lightAll() { cells.forEach(function (c) { c.classList.add('on'); }); }
+    var rounds = row.querySelectorAll('.cl-round');
+    var fill = row.querySelector('.cl-line-fill');
+    var i = 0, timer = null;
 
-    if (reduced || !('IntersectionObserver' in window)) { lightAll(); return; }
+    function tick() {
+      rounds.forEach(function (r, k) { r.classList.toggle('on', k === i); });
+      if (fill) fill.style.width = ((i + 0.5) / rounds.length) * 100 + '%';
+      i = (i + 1) % rounds.length;
+    }
 
-    var played = false;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting || played) return;
-        played = true;
-        io.disconnect();
-        // Reveal left to right once; the row then stays fully visible so a
-        // reader scrolling back is not looking at a dimmed strip.
-        cells.forEach(function (c, i) {
-          setTimeout(function () { c.classList.add('on'); }, i * 130);
-        });
+    if (reduced) {
+      rounds.forEach(function (r) { r.classList.add('on'); });
+      if (fill) fill.style.width = '100%';
+      return;
+    }
+    if (!('IntersectionObserver' in window)) { rounds.forEach(function (r) { r.classList.add('on'); }); return; }
+
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        // Pause off-screen so four rows are not animating out of view.
+        if (e.isIntersecting && !timer) { tick(); timer = setInterval(tick, 1250); }
+        else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.2 });
     io.observe(row);
   });
+
+  // --- progress scrubber --------------------------------------------------
+  var scrub = document.querySelector('.scrub');
+  if (scrub) {
+    var range = scrub.querySelector('#scrubRange');
+    var out = scrub.querySelector('#scrubVal');
+    var cards = scrub.querySelectorAll('.scrub-card');
+    var buttons = scrub.querySelectorAll('.scrub-toggle button');
+    var R = ['0', '0.1', '0.3', '0.5', '0.7', '0.9'];
+    var mode = 'gen';
+
+    // Preload so dragging does not flash placeholder gaps.
+    cards.forEach(function (c) {
+      var k = c.dataset.key;
+      ['g', 't'].forEach(function (m) {
+        for (var j = 0; j < 5; j++) { var im = new Image(); im.src = 'static/em/' + k + '_' + m + j + '.jpg'; }
+      });
+    });
+
+    function render() {
+      var idx = parseInt(range.value, 10);
+      out.textContent = 'r = ' + R[idx];
+      cards.forEach(function (c) {
+        var k = c.dataset.key;
+        var img = c.querySelector('img');
+        // index 0 is the shared first frame; 1..5 map to the five progress points
+        img.src = idx === 0 ? 'static/em/' + k + '_f0.jpg'
+                            : 'static/em/' + k + '_' + (mode === 'gen' ? 'g' : 't') + (idx - 1) + '.jpg';
+        img.classList.toggle('gen', mode === 'gen');
+      });
+    }
+
+    range.addEventListener('input', render);
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        mode = b.dataset.mode;
+        buttons.forEach(function (x) { x.classList.toggle('on', x === b); });
+        render();
+      });
+    });
+    render();
+  }
 })();
