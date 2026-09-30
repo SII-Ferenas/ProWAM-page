@@ -238,7 +238,8 @@ tbody tr.ours td b{color:var(--blue-soft)}
   border-radius:100px; cursor:pointer; font-family:inherit; transition:all .2s ease}
 .scrub-toggle button.on{border-color:var(--blue); color:var(--fg); background:rgba(0,162,232,.11)}
 
-.lab .up{color:var(--blue-soft); font-weight:600}
+.num.up{color:var(--blue-soft)}
+.lab b{color:var(--fg); font-weight:600}
 
 .btn.disabled{opacity:.5; cursor:default; pointer-events:none}
 .btn i{font-style:normal; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;

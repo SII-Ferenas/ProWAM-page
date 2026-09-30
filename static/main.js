@@ -26,15 +26,16 @@
   function countUp(el) {
     var to = parseFloat(el.dataset.to);
     var suffix = el.dataset.suffix || '';
+    var prefix = el.dataset.prefix || '';
     // Match the source precision so "70.0" does not render as "70".
     var decimals = (String(el.dataset.to).split('.')[1] || '').length;
-    if (reduced) { el.textContent = to.toFixed(decimals) + suffix; return; }
+    if (reduced) { el.textContent = prefix + to.toFixed(decimals) + suffix; return; }
     var dur = 1100, t0 = null;
     function tick(ts) {
       if (t0 === null) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
       var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = (to * eased).toFixed(decimals) + suffix;
+      el.textContent = prefix + (to * eased).toFixed(decimals) + suffix;
       if (p < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
