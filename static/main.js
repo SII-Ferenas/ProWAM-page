@@ -169,8 +169,11 @@
       }
     }
     if (pts.length < 40) return;
-    h1.style.visibility = 'hidden';
-    cv.style.display = 'block';
+    // Park the canvas exactly over the heading; the h1 keeps its box.
+    var r = h1.getBoundingClientRect(), pr = h1.offsetParent.getBoundingClientRect();
+    cv.style.top = (r.top - pr.top + (r.height - H) / 2) + 'px';
+    cv.style.opacity = '1';
+    h1.style.opacity = '0';
 
     var ps = pts.map(function (q) {
       var ang = Math.random() * Math.PI * 2, rad = 90 + Math.random() * 320;
@@ -203,9 +206,27 @@
       if (settled / ps.length > 0.985 && ts - t0 > 900) done = true;
       if (!done) requestAnimationFrame(frame);
       else {
-        // Hand back to real text so it stays selectable and sharp.
-        cv.style.display = 'none';
-        h1.style.visibility = '';
+        // Dots never fill the glyph the way solid type does, so paint the real
+        // word onto the canvas first; the handover then has nothing to jump.
+        ctx.clearRect(0, 0, W, H);
+        var g = ctx.createLinearGradient(proW, 0, W, 0);
+        g.addColorStop(0, '#00a2e8');
+        g.addColorStop(0.38, '#61bdde');
+        g.addColorStop(0.72, '#f1a29f');
+        g.addColorStop(1, '#dc1e1e');
+        ctx.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
+        ctx.textBaseline = 'middle';
+        ctx.save();
+        ctx.beginPath(); ctx.rect(0, 0, proW, H); ctx.clip();
+        ctx.fillStyle = '#e9ecf2'; ctx.fillText('ProWAM', 4, H / 2);
+        ctx.restore();
+        ctx.save();
+        ctx.beginPath(); ctx.rect(proW, 0, W - proW, H); ctx.clip();
+        ctx.fillStyle = g; ctx.fillText('ProWAM', 4, H / 2);
+        ctx.restore();
+        h1.style.opacity = '1';
+        cv.style.opacity = '0';
+        setTimeout(function () { cv.remove(); }, 320);
       }
     }
     requestAnimationFrame(frame);

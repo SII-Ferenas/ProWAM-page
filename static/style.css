@@ -279,9 +279,10 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .hero-fx{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0}
 .hero .wrap{position:relative; z-index:1}
 
-#proFx{display:none; margin:0 auto 14px}
-.fx-on #proTitle{visibility:hidden; position:absolute; left:-9999px}
-.fx-on #proFx{display:block}
+/* Overlaid, so the h1 keeps holding the layout and nothing shifts on swap. */
+#proFx{position:absolute; left:50%; transform:translateX(-50%); pointer-events:none;
+  opacity:0; transition:opacity .28s ease; z-index:2}
+#proTitle{transition:opacity .28s ease}
 
 /* ---------- bibtex ---------- */
 .cite-sec{padding-bottom:96px}
