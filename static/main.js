@@ -132,20 +132,20 @@
     }
   }
 
-  // --- hero particles: drift left-to-right, blue into red ----------------
-  var fx = document.querySelector('.hero-fx');
+  // --- page particles: drift left-to-right, blue into red ----------------
+  var fx = document.querySelector('.page-fx');
   if (fx && !reduced) {
-    var hero = fx.parentElement, ctx = fx.getContext('2d');
+    var ctx = fx.getContext('2d');
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var W = 0, H = 0, parts = [], raf = null;
 
     function size() {
-      W = hero.offsetWidth; H = hero.offsetHeight;
+      W = window.innerWidth; H = window.innerHeight;
       fx.width = W * dpr; fx.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     function seed() {
-      // Scale with area so a wide hero is not sparse and a phone is not busy.
+      // Scale with area so a wide screen is not sparse and a phone is not busy.
       var n = Math.round(Math.min(120, Math.max(38, (W * H) / 11000)));
       parts = [];
       for (var i = 0; i < n; i++) {
@@ -180,11 +180,6 @@
     var rt; window.addEventListener('resize', function () {
       clearTimeout(rt); rt = setTimeout(function () { size(); seed(); }, 150);
     });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
-        es.forEach(function (e) { e.isIntersecting ? go() : stop(); });
-      }, { threshold: 0 }).observe(hero);
-    }
     document.addEventListener('visibilitychange', function () {
       document.hidden ? stop() : go();
     });
