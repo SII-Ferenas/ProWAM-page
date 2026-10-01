@@ -305,46 +305,95 @@
     <div class="eyebrow reveal">Progressive planning emerges</div>
     <h2 class="reveal">Planning that was never taught, only learned.</h2>
     <p class="lead reveal">
-      <b>Stage 1</b> sees only action-free video &mdash; <b>no actions</b>, no policy, no simulator. Given a
-      first frame and an instruction it is asked for the scene at a chosen progress point.
-      Drag the slider: LIBERO and RoboTwin were never in its training data, yet the
-      imagined milestones advance in step with the real trajectory.
+      <b>Stage 1</b> sees only action-free video &mdash; <b>no actions</b>, no policy, no simulator.
+      Given a first frame and an instruction, it imagines the scene at each progress point.
+      None of these scenes were in its training data.
     </p>
   </div>
-  <div class="wrap narrow">
-    <div class="scrub reveal">
-      <div class="scrub-grid">
-        <div class="scrub-card" data-key="libero_ep13">
-          <img class="gen" src="static/em/libero_ep13_f0.jpg" alt="LIBERO imagined sub-goal"/>
-          <span class="task">&ldquo;put the bowl on the stove&rdquo;</span><span class="dom">LIBERO</span><span class="sp unseen">unseen</span>
-        </div>
-        <div class="scrub-card" data-key="libero_ep1">
-          <img class="gen" src="static/em/libero_ep1_f0.jpg" alt="LIBERO imagined sub-goal"/>
-          <span class="task">&ldquo;put the wine bottle on the rack&rdquo;</span><span class="dom">LIBERO</span><span class="sp unseen">unseen</span>
-        </div>
-        <div class="scrub-card" data-key="robotwin_ep16000">
-          <img class="gen" src="static/em/robotwin_ep16000_f0.jpg" alt="RoboTwin imagined sub-goal"/>
-          <span class="task">&ldquo;put the light blue cup on the wooden coaster&rdquo;</span><span class="dom">RoboTwin</span><span class="sp unseen">unseen</span>
-        </div>
-        <div class="scrub-card" data-key="robotwin_ep26000">
-          <img class="gen" src="static/em/robotwin_ep26000_f0.jpg" alt="RoboTwin imagined sub-goal"/>
-          <span class="task">&ldquo;slide the food bowl onto the ceramic bowl&rdquo;</span><span class="dom">RoboTwin</span><span class="sp unseen">unseen</span>
-        </div>
-        <div class="scrub-card" data-key="droid_ep1000">
-          <img class="gen" src="static/em/droid_ep1000_f0.jpg" alt="DROID imagined sub-goal"/>
-          <span class="task">&ldquo;push the top of the bottle left of the tap&rdquo;</span><span class="dom">DROID</span><span class="sp seen">seen</span>
-        </div>
-      </div>
-      <div class="scrub-ctl">
-        <label>progress</label>
-        <input type="range" id="scrubRange" min="0" max="5" step="1" value="0"/>
-        <span class="scrub-val" id="scrubVal">r = 0</span>
-      </div>
-      <div class="scrub-toggle"><button data-mode="auto" class="on">auto</button>
-        <button data-mode="gen">imagined</button>
-        <button data-mode="gt">ground truth</button>
-      </div>
+  <div class="wrap">
+    <div class="ood-wall reveal">
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep20000_0.jpg&quot;, &quot;static/ood/robotwin_ep20000_1.jpg&quot;, &quot;static/ood/robotwin_ep20000_2.jpg&quot;, &quot;static/ood/robotwin_ep20000_3.jpg&quot;, &quot;static/ood/robotwin_ep20000_4.jpg&quot;, &quot;static/ood/robotwin_ep20000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep20000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;grab the synthetic leather white shoe from the table with the right arm and place it on the mat&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">grab the synthetic leather white shoe from the table with the right arm and place it on the mat</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep13_0.jpg&quot;, &quot;static/ood/libero_ep13_1.jpg&quot;, &quot;static/ood/libero_ep13_2.jpg&quot;, &quot;static/ood/libero_ep13_3.jpg&quot;, &quot;static/ood/libero_ep13_4.jpg&quot;, &quot;static/ood/libero_ep13_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep13_0.jpg" alt="LIBERO: imagined progress for &ldquo;put the bowl on the stove&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">put the bowl on the stove</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep4000_0.jpg&quot;, &quot;static/ood/robotwin_ep4000_1.jpg&quot;, &quot;static/ood/robotwin_ep4000_2.jpg&quot;, &quot;static/ood/robotwin_ep4000_3.jpg&quot;, &quot;static/ood/robotwin_ep4000_4.jpg&quot;, &quot;static/ood/robotwin_ep4000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep4000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;take both arms to grasp the light wood roller&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">take both arms to grasp the light wood roller</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep1_0.jpg&quot;, &quot;static/ood/libero_ep1_1.jpg&quot;, &quot;static/ood/libero_ep1_2.jpg&quot;, &quot;static/ood/libero_ep1_3.jpg&quot;, &quot;static/ood/libero_ep1_4.jpg&quot;, &quot;static/ood/libero_ep1_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep1_0.jpg" alt="LIBERO: imagined progress for &ldquo;put the wine bottle on the rack&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">put the wine bottle on the rack</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep3_0.jpg&quot;, &quot;static/ood/libero_ep3_1.jpg&quot;, &quot;static/ood/libero_ep3_2.jpg&quot;, &quot;static/ood/libero_ep3_3.jpg&quot;, &quot;static/ood/libero_ep3_4.jpg&quot;, &quot;static/ood/libero_ep3_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep3_0.jpg" alt="LIBERO: imagined progress for &ldquo;open the top drawer and put the bowl inside&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">open the top drawer and put the bowl inside</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep25000_0.jpg&quot;, &quot;static/ood/robotwin_ep25000_1.jpg&quot;, &quot;static/ood/robotwin_ep25000_2.jpg&quot;, &quot;static/ood/robotwin_ep25000_3.jpg&quot;, &quot;static/ood/robotwin_ep25000_4.jpg&quot;, &quot;static/ood/robotwin_ep25000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep25000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;place red block and green block at the center and then put green block on red block&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">place red block and green block at the center and then put green block on red block</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep0_0.jpg&quot;, &quot;static/ood/libero_ep0_1.jpg&quot;, &quot;static/ood/libero_ep0_2.jpg&quot;, &quot;static/ood/libero_ep0_3.jpg&quot;, &quot;static/ood/libero_ep0_4.jpg&quot;, &quot;static/ood/libero_ep0_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep0_0.jpg" alt="LIBERO: imagined progress for &ldquo;put the bowl on the plate&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">put the bowl on the plate</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep5000_0.jpg&quot;, &quot;static/ood/robotwin_ep5000_1.jpg&quot;, &quot;static/ood/robotwin_ep5000_2.jpg&quot;, &quot;static/ood/robotwin_ep5000_3.jpg&quot;, &quot;static/ood/robotwin_ep5000_4.jpg&quot;, &quot;static/ood/robotwin_ep5000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep5000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;grasp the mesh-patterned microphone head and pass it across&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">grasp the mesh-patterned microphone head and pass it across</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep16000_0.jpg&quot;, &quot;static/ood/robotwin_ep16000_1.jpg&quot;, &quot;static/ood/robotwin_ep16000_2.jpg&quot;, &quot;static/ood/robotwin_ep16000_3.jpg&quot;, &quot;static/ood/robotwin_ep16000_4.jpg&quot;, &quot;static/ood/robotwin_ep16000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep16000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;make sure the cylindrical light blue cup ends up on the flat round wooden coaster&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">make sure the cylindrical light blue cup ends up on the flat round wooden coaster</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep10_0.jpg&quot;, &quot;static/ood/libero_ep10_1.jpg&quot;, &quot;static/ood/libero_ep10_2.jpg&quot;, &quot;static/ood/libero_ep10_3.jpg&quot;, &quot;static/ood/libero_ep10_4.jpg&quot;, &quot;static/ood/libero_ep10_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep10_0.jpg" alt="LIBERO: imagined progress for &ldquo;put the wine bottle on top of the cabinet&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">put the wine bottle on top of the cabinet</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep26000_0.jpg&quot;, &quot;static/ood/robotwin_ep26000_1.jpg&quot;, &quot;static/ood/robotwin_ep26000_2.jpg&quot;, &quot;static/ood/robotwin_ep26000_3.jpg&quot;, &quot;static/ood/robotwin_ep26000_4.jpg&quot;, &quot;static/ood/robotwin_ep26000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep26000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;hold the ceramic bowl with earthy brown trim steady and slide the medium-sized bowl for holding food on&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">hold the ceramic bowl with earthy brown trim steady and slide the medium-sized bowl for holding food on</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep14_0.jpg&quot;, &quot;static/ood/libero_ep14_1.jpg&quot;, &quot;static/ood/libero_ep14_2.jpg&quot;, &quot;static/ood/libero_ep14_3.jpg&quot;, &quot;static/ood/libero_ep14_4.jpg&quot;, &quot;static/ood/libero_ep14_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep14_0.jpg" alt="LIBERO: imagined progress for &ldquo;put the cream cheese in the bowl&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">put the cream cheese in the bowl</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep7_0.jpg&quot;, &quot;static/ood/libero_ep7_1.jpg&quot;, &quot;static/ood/libero_ep7_2.jpg&quot;, &quot;static/ood/libero_ep7_3.jpg&quot;, &quot;static/ood/libero_ep7_4.jpg&quot;, &quot;static/ood/libero_ep7_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep7_0.jpg" alt="LIBERO: imagined progress for &ldquo;push the plate to the front of the stove&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">push the plate to the front of the stove</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep2000_0.jpg&quot;, &quot;static/ood/robotwin_ep2000_1.jpg&quot;, &quot;static/ood/robotwin_ep2000_2.jpg&quot;, &quot;static/ood/robotwin_ep2000_3.jpg&quot;, &quot;static/ood/robotwin_ep2000_4.jpg&quot;, &quot;static/ood/robotwin_ep2000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep2000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;use the right arm, the left arm, and the left arm to center large block, medium block, and small block in order&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">use the right arm, the left arm, and the left arm to center large block, medium block, and small block in order</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/libero_ep11_0.jpg&quot;, &quot;static/ood/libero_ep11_1.jpg&quot;, &quot;static/ood/libero_ep11_2.jpg&quot;, &quot;static/ood/libero_ep11_3.jpg&quot;, &quot;static/ood/libero_ep11_4.jpg&quot;, &quot;static/ood/libero_ep11_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/libero_ep11_0.jpg" alt="LIBERO: imagined progress for &ldquo;turn on the stove&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">LIBERO</span><span class="ood-p">turn on the stove</span></figcaption>
+        </figure>
+        <figure class="ood-t" data-frames="[&quot;static/ood/robotwin_ep14000_0.jpg&quot;, &quot;static/ood/robotwin_ep14000_1.jpg&quot;, &quot;static/ood/robotwin_ep14000_2.jpg&quot;, &quot;static/ood/robotwin_ep14000_3.jpg&quot;, &quot;static/ood/robotwin_ep14000_4.jpg&quot;, &quot;static/ood/robotwin_ep14000_5.jpg&quot;]">
+          <div class="ood-im"><img src="static/ood/robotwin_ep14000_0.jpg" alt="RoboTwin: imagined progress for &ldquo;grab the smooth red can, drop it into the yellow basket for carrying stuff, then use another arm for the yellow basket for carrying stuff&rdquo;" loading="lazy"/>
+            <span class="ood-r">r = 0</span><i class="ood-bar"><b></b></i></div>
+          <figcaption><span class="dom">RoboTwin</span><span class="ood-p">grab the smooth red can, drop it into the yellow basket for carrying stuff, then use another arm for the yellow basket for carrying stuff</span></figcaption>
+        </figure>
     </div>
+    <p class="ood-note">Every tile is out of distribution &middot; first frame at <span class="k">r = 0</span>, then imagined milestones at <span class="k">r = 0.1 &hellip; 0.9</span> &middot; hover to pause</p>
   </div>
 </section>
 

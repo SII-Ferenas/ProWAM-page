@@ -225,68 +225,44 @@
     });
   }
 
-  // --- progress scrubber: plays itself until you grab it -----------------
-  var scrub = document.querySelector('.scrub');
-  if (scrub) {
-    var range = scrub.querySelector('#scrubRange');
-    var out = scrub.querySelector('#scrubVal');
-    var cards = scrub.querySelectorAll('.scrub-card');
-    var buttons = scrub.querySelectorAll('.scrub-toggle button');
+  // --- OOD wall: every tile plays r = 0 -> 0.9 on its own clock -----------
+  var tiles = document.querySelectorAll('.ood-t');
+  if (tiles.length) {
     var R = ['0', '0.1', '0.3', '0.5', '0.7', '0.9'];
-    var mode = 'gen', auto = null;
-    var EM = function (s) { return (window.__EM && window.__EM[s]) || s; };
-
-    cards.forEach(function (c) {
-      var k = c.dataset.key;
-      ['g', 't'].forEach(function (m) {
-        for (var j = 0; j < 5; j++) { var im = new Image(); im.src = EM('static/em/' + k + '_' + m + j + '.jpg'); }
-      });
+    var state = [];
+    tiles.forEach(function (t, n) {
+      var fr = JSON.parse(t.dataset.frames);
+      fr.forEach(function (s) { new Image().src = s; });
+      var st = { t: t, fr: fr, i: 0, img: t.querySelector('img'), r: t.querySelector('.ood-r'),
+                 bar: t.querySelector('.ood-bar b'), hold: false, lag: n % 6 };
+      t.addEventListener('mouseenter', function () { st.hold = true; });
+      t.addEventListener('mouseleave', function () { st.hold = false; });
+      state.push(st);
     });
-
-    function render() {
-      var idx = parseInt(range.value, 10);
-      out.textContent = 'r = ' + R[idx];
-      cards.forEach(function (c) {
-        var k = c.dataset.key, img = c.querySelector('img');
-        img.src = EM(idx === 0 ? 'static/em/' + k + '_f0.jpg'
-                               : 'static/em/' + k + '_' + (mode === 'gen' ? 'g' : 't') + (idx - 1) + '.jpg');
+    function draw(st) {
+      st.img.src = st.fr[st.i];
+      st.r.textContent = 'r = ' + R[st.i];
+      st.bar.style.width = (st.i / (R.length - 1) * 100) + '%';
+      st.t.classList.toggle('gen', st.i > 0);
+    }
+    state.forEach(draw);
+    var beat = 0, wallTimer = null;
+    function step() {
+      beat++;
+      state.forEach(function (st) {
+        if (st.hold || beat < st.lag) return;
+        st.i = (st.i + 1) % R.length;
+        draw(st);
       });
     }
-
-    function stopAuto() {
-      if (auto) { clearInterval(auto); auto = null; }
-      scrub.querySelector('[data-mode="auto"]').classList.remove('on');
-    }
-    function startAuto() {
-      if (auto || reduced) return;
-      scrub.querySelector('[data-mode="auto"]').classList.add('on');
-      auto = setInterval(function () {
-        range.value = (parseInt(range.value, 10) + 1) % R.length;
-        render();
-      }, 1100);
-    }
-
-    // Touching the slider hands control over; the auto chip takes it back.
-    ['input', 'pointerdown'].forEach(function (ev) {
-      range.addEventListener(ev, function () { stopAuto(); render(); });
-    });
-    buttons.forEach(function (b) {
-      b.addEventListener('click', function () {
-        if (b.dataset.mode === 'auto') { startAuto(); return; }
-        mode = b.dataset.mode;
-        buttons.forEach(function (x) {
-          if (x.dataset.mode !== 'auto') x.classList.toggle('on', x === b);
+    if (!reduced) {
+      var wall = document.querySelector('.ood-wall');
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting && !wallTimer) wallTimer = setInterval(step, 850);
+          else if (!e.isIntersecting && wallTimer) { clearInterval(wallTimer); wallTimer = null; }
         });
-        render();
-      });
-    });
-
-    render();
-    if (!reduced && 'IntersectionObserver' in window) {
-      var sio = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) { startAuto(); } else { stopAuto(); } });
-      }, { threshold: 0.3 });
-      sio.observe(scrub);
+      }, { threshold: 0.1 }).observe(wall);
     }
   }
 })();

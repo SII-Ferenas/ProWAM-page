@@ -228,33 +228,30 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .cl-legend .d.imagine{background:var(--blue)}
 .cl-legend .d.exec{background:var(--red)}
 
-/* ---------- interactive progress scrubber ---------- */
-.scrub{margin-top:30px; background:rgba(18,20,29,.84); border:1px solid var(--line);
-  border-radius:var(--radius); padding:22px}
-.scrub-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px}
-.scrub-card{text-align:center}
-.scrub-card .pair{display:grid; grid-template-columns:1fr; gap:6px}
-.scrub-card img{width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; display:block;
-  border:2px solid transparent}
-.scrub-card img.gen{border-color:var(--blue)}
-.scrub-card .dom{font-size:11.5px; color:var(--muted); margin-top:8px; display:block}
-.scrub-card .sp{margin:6px 0 0}
-.scrub-ctl{display:flex; align-items:center; gap:14px; margin-top:22px}
-.scrub-ctl label{font-size:12px; color:var(--dim); letter-spacing:.07em; text-transform:uppercase;
-  white-space:nowrap}
-.scrub-ctl input[type=range]{flex:1; -webkit-appearance:none; appearance:none; height:4px;
-  border-radius:100px; background:linear-gradient(90deg,var(--blue),var(--red)); outline:none}
-.scrub-ctl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:17px; height:17px;
-  border-radius:50%; background:var(--fg); cursor:pointer; border:3px solid var(--bg)}
-.scrub-ctl input[type=range]::-moz-range-thumb{width:17px; height:17px; border-radius:50%;
-  background:var(--fg); cursor:pointer; border:3px solid var(--bg)}
-.scrub-val{font-family:"JetBrains Mono",monospace; font-size:14px; color:var(--blue-soft);
-  min-width:74px; text-align:right}
-.scrub-toggle{display:flex; justify-content:center; gap:8px; margin-top:16px}
-.scrub-toggle button{background:transparent; border:1px solid var(--line); color:var(--dim);
-  font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; padding:6px 15px;
-  border-radius:100px; cursor:pointer; font-family:inherit; transition:all .2s ease}
-.scrub-toggle button.on{border-color:var(--blue); color:var(--fg); background:rgba(0,162,232,.11)}
+/* ---------- OOD imagination wall ---------- */
+.ood-wall{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:30px}
+.ood-t{margin:0; background:rgba(18,20,29,.84); border:1px solid var(--line); border-radius:12px;
+  padding:8px 8px 10px; transition:border-color .3s ease, transform .3s ease}
+.ood-t:hover{border-color:rgba(0,162,232,.55); transform:translateY(-2px)}
+.ood-im{position:relative; border-radius:8px; overflow:hidden}
+.ood-im img{width:100%; aspect-ratio:1; object-fit:cover; display:block; transition:opacity .2s ease}
+.ood-im::after{content:""; position:absolute; inset:0; border-radius:8px; pointer-events:none;
+  border:2px solid #5a6474; transition:border-color .3s ease, box-shadow .3s ease}
+.ood-t.gen .ood-im::after{border-color:var(--blue); box-shadow:inset 0 0 18px rgba(0,162,232,.35)}
+.ood-r{position:absolute; left:8px; top:8px; font:500 10.5px "JetBrains Mono",monospace; color:var(--fg);
+  background:rgba(7,8,12,.72); padding:2px 7px; border-radius:100px}
+.ood-t.gen .ood-r{color:var(--blue-soft)}
+.ood-bar{position:absolute; left:0; right:0; bottom:0; height:3px; background:rgba(7,8,12,.6)}
+.ood-bar b{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--blue),var(--red));
+  transition:width .35s ease}
+.ood-t figcaption{display:flex; flex-direction:column; gap:3px; margin-top:8px; padding:0 2px}
+.ood-t .dom{font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--dim); font-weight:600}
+.ood-p{font-size:12px; color:var(--muted); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2;
+  -webkit-box-orient:vertical; overflow:hidden}
+.ood-t:hover .ood-p{-webkit-line-clamp:unset; color:var(--fg)}
+.ood-note{text-align:center; font-size:12px; color:var(--dim); margin-top:20px}
+@media (max-width:980px){ .ood-wall{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:640px){ .ood-wall{grid-template-columns:repeat(2,1fr)} }
 
 .num.up{color:var(--blue-soft)}
 .lab b{color:var(--fg); font-weight:600}
@@ -417,7 +414,6 @@ footer{border-top:1px solid var(--line); padding:38px 0 54px; color:var(--dim); 
   .stats-3{grid-template-columns:1fr}
   .grid-3{grid-template-columns:1fr}
   .emerge-grid{grid-template-columns:1fr}
-  .scrub-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:760px){
   body{font-size:16px}
