@@ -141,12 +141,9 @@
     var title = document.getElementById('stageTitle');
     var note = document.getElementById('stageNote');
     var STAGES = {
-      '1': { off: ['a'], t: 'Action-free video pretraining',
-        n: 'Action-free videos only. The video expert learns visual dynamics and to predict the scene at any requested progress r. No action labels, no action expert.' },
-      '2': { off: [], t: 'Joint fine-tuning',
-        n: 'On robot demonstrations both experts train together. Action tokens attend to the observation and the sub-goals, so every action chunk is grounded in the plan.' },
-      '3': { off: ['x'], t: 'Inference with sub-goal caching',
-        n: 'No dense rollout. The video expert runs once on the observation and sub-goal slots; their key\u2013value features are cached and the action expert denoises all T steps against them \u2014 about 10\u00d7 fewer video-expert passes. A new observation refreshes the cache.' }
+      '1': { off: ['a'], t: 'Action-free video pretraining', n: 'Action-free video only: the video expert learns to imagine the scene at any progress r. No action expert yet.' },
+      '2': { off: [], t: 'Joint fine-tuning', n: 'Robot demonstrations: both experts train jointly, and action tokens attend to the observation and sub-goals.' },
+      '3': { off: ['x'], t: 'Inference with sub-goal caching', n: 'The video expert runs once per replan; its cached sub-goal features serve every action step (~10\u00d7 fewer passes).' }
     };
     function apply(s) {
       var st = STAGES[s];

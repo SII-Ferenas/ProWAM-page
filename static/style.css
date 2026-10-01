@@ -403,7 +403,7 @@ header, main, footer, section{position:relative; z-index:1}
 .amask-cap{font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim);
   text-align:center; margin:9px 0 0}
 
-.stage-note{margin-top:18px; min-height:84px; max-width:880px}
+.stage-note{margin-top:18px; min-height:52px; max-width:880px}
 .stage-note h3{font-size:16px; margin:0 0 6px; color:var(--fg)}
 .stage-note p{font-size:14px; margin:0}
 
