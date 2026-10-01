@@ -141,7 +141,7 @@
     var title = document.getElementById('stageTitle');
     var note = document.getElementById('stageNote');
     var STAGES = {
-      '1': { off: ['a'], t: 'Video-only pretraining',
+      '1': { off: ['a'], t: 'Action-free video pretraining',
         n: 'Action-free videos only. The video expert learns visual dynamics and to predict the scene at any requested progress r. No action labels, no action expert.' },
       '2': { off: [], t: 'Joint fine-tuning',
         n: 'On robot demonstrations both experts train together. Action tokens attend to the observation and the sub-goals, so every action chunk is grounded in the plan.' },

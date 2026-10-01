@@ -249,28 +249,28 @@ tbody tr.ours td b{color:var(--blue-soft)}
 @media (max-width:900px){ .real-grid{grid-template-columns:1fr} }
 
 /* ---------- OOD imagination wall ---------- */
-.ood-wall{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:30px}
+.ood-wall{display:grid; grid-template-columns:repeat(8,1fr); gap:10px; margin-top:30px}
 .ood-t{margin:0; background:rgba(18,20,29,.84); border:1px solid var(--line); border-radius:12px;
-  padding:8px 8px 10px; transition:border-color .3s ease, transform .3s ease}
+  padding:6px 6px 8px; transition:border-color .3s ease, transform .3s ease}
 .ood-t:hover{border-color:rgba(0,162,232,.55); transform:translateY(-2px)}
 .ood-im{position:relative; border-radius:8px; overflow:hidden}
 .ood-im img{width:100%; aspect-ratio:1; object-fit:cover; display:block; transition:opacity .2s ease}
 .ood-im::after{content:""; position:absolute; inset:0; border-radius:8px; pointer-events:none;
   border:2px solid #5a6474; transition:border-color .3s ease, box-shadow .3s ease}
 .ood-t.gen .ood-im::after{border-color:var(--blue); box-shadow:inset 0 0 18px rgba(0,162,232,.35)}
-.ood-r{position:absolute; left:8px; top:8px; font:500 10.5px "JetBrains Mono",monospace; color:var(--fg);
+.ood-r{position:absolute; left:6px; top:6px; font:500 9.5px "JetBrains Mono",monospace; color:var(--fg);
   background:rgba(7,8,12,.72); padding:2px 7px; border-radius:100px}
 .ood-t.gen .ood-r{color:var(--blue-soft)}
 .ood-bar{position:absolute; left:0; right:0; bottom:0; height:3px; background:rgba(7,8,12,.6)}
 .ood-bar b{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--blue),var(--red));
   transition:width .35s ease}
 .ood-t figcaption{display:flex; flex-direction:column; gap:3px; margin-top:8px; padding:0 2px}
-.ood-t .dom{font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--dim); font-weight:600}
-.ood-p{font-size:12px; color:var(--muted); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2;
+.ood-t .dom{font-size:9px; letter-spacing:.09em; text-transform:uppercase; color:var(--dim); font-weight:600}
+.ood-p{font-size:11px; color:var(--muted); line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2;
   -webkit-box-orient:vertical; overflow:hidden}
 .ood-t:hover .ood-p{-webkit-line-clamp:unset; line-clamp:unset; color:var(--fg)}
 .ood-note{text-align:center; font-size:12px; color:var(--dim); margin-top:20px}
-@media (max-width:980px){ .ood-wall{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:1100px){ .ood-wall{grid-template-columns:repeat(4,1fr)} }
 @media (max-width:640px){ .ood-wall{grid-template-columns:repeat(2,1fr)} }
 
 .num.up{color:var(--blue-soft)}
