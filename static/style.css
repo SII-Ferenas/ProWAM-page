@@ -40,10 +40,12 @@ a:hover{text-decoration:underline}
 
 /* ---------- hero ---------- */
 .hero{position:relative; padding:104px 0 72px; overflow:hidden; text-align:center}
-.hero-bg{position:absolute; inset:-30% -10% auto -10%; height:150%;
+/* Percentage offsets here left a flat band above the glow; pin it in pixels
+   and let it start well above the viewport instead. */
+.hero-bg{position:absolute; top:-320px; left:-10%; right:-10%; height:calc(100% + 420px);
   background:
-    radial-gradient(48% 40% at 22% 18%, rgba(0,162,232,.20), transparent 62%),
-    radial-gradient(44% 38% at 80% 26%, rgba(220,30,30,.14), transparent 62%);
+    radial-gradient(46% 34% at 24% 42%, rgba(0,162,232,.22), transparent 62%),
+    radial-gradient(42% 32% at 78% 48%, rgba(220,30,30,.16), transparent 62%);
   filter:blur(18px); pointer-events:none}
 .hero .wrap{position:relative}
 
