@@ -71,13 +71,12 @@ a:hover{text-decoration:underline}
   color:var(--fg); font-size:14.5px; font-weight:500;
   transition:transform .16s ease, border-color .16s ease, background .16s ease}
 .btn:hover{transform:translateY(-2px); text-decoration:none}
-.btn:not(.primary){border:1px solid transparent;
-  background:linear-gradient(#11141c,#11141c) padding-box, linear-gradient(100deg,var(--blue),var(--red)) border-box}
-.btn:not(.primary):hover{background:linear-gradient(#171b25,#171b25) padding-box, linear-gradient(100deg,var(--blue),var(--red)) border-box;
-  box-shadow:0 6px 22px rgba(0,162,232,.14)}
-.btn.primary{background:linear-gradient(100deg,var(--blue),var(--red)); border-color:transparent; color:#fff;
-  box-shadow:0 6px 24px rgba(0,162,232,.22), 0 6px 24px rgba(220,30,30,.14)}
-.btn.primary:hover{filter:brightness(1.1)}
+/* The three buttons read as one blue -> red sweep: each takes a third of it. */
+.links .btn{border-color:transparent; color:#fff}
+.links .btn:nth-child(1){background:linear-gradient(100deg,#00a2e8,#4976a5)}
+.links .btn:nth-child(2){background:linear-gradient(100deg,#4976a5,#934a61)}
+.links .btn:nth-child(3){background:linear-gradient(100deg,#934a61,#dc1e1e)}
+.links .btn:hover{filter:brightness(1.12); box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .btn.ghost{background:transparent}
 
 /* ---------- teaser ---------- */
