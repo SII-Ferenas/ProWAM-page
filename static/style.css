@@ -228,6 +228,22 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .cl-legend .d.imagine{background:var(--blue)}
 .cl-legend .d.exec{background:var(--red)}
 
+/* ---------- real-robot rollouts ---------- */
+.real-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:30px}
+.real-c{margin:0; background:rgba(18,20,29,.84); border:1px solid var(--line); border-radius:var(--radius);
+  padding:10px 10px 12px}
+.real-v{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.real-cam{position:relative}
+.real-cam video{width:100%; aspect-ratio:16/9; object-fit:cover; display:block; border-radius:8px;
+  border:2px solid var(--red); background:#0d0f16}
+.real-cam span{position:absolute; left:7px; top:7px; font-size:9.5px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--fg); background:rgba(7,8,12,.7); padding:2px 7px; border-radius:100px}
+.real-c figcaption{display:flex; align-items:center; gap:10px; margin-top:10px; padding:0 4px}
+.real-task{font-size:13px; font-style:italic; color:var(--muted)}
+.real-x{margin-left:auto; font-style:normal; font:500 11px "JetBrains Mono",monospace; color:var(--dim);
+  border:1px solid var(--line); border-radius:100px; padding:2px 8px}
+@media (max-width:900px){ .real-grid{grid-template-columns:1fr} }
+
 /* ---------- OOD imagination wall ---------- */
 .ood-wall{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:30px}
 .ood-t{margin:0; background:rgba(18,20,29,.84); border:1px solid var(--line); border-radius:12px;

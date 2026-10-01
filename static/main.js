@@ -225,6 +225,24 @@
     });
   }
 
+  // --- real robot: two cameras of one rollout, kept in step ---------------
+  document.querySelectorAll('.real-c').forEach(function (c) {
+    var vs = c.querySelectorAll('video');
+    var lead = vs[0];
+    // No loop attribute: restart both together so the views never drift apart.
+    lead.addEventListener('ended', function () {
+      vs.forEach(function (v) { v.currentTime = 0; v.play().catch(function () {}); });
+    });
+    function play() { vs.forEach(function (v) { v.play().catch(function () {}); }); }
+    function pause() { vs.forEach(function (v) { v.pause(); }); }
+    if (reduced) return;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { e.isIntersecting ? play() : pause(); });
+      }, { threshold: 0.3 }).observe(c);
+    } else { play(); }
+  });
+
   // --- OOD wall: every tile plays r = 0 -> 0.9 on its own clock -----------
   var tiles = document.querySelectorAll('.ood-t');
   if (tiles.length) {
