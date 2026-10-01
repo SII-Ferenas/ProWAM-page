@@ -70,8 +70,13 @@ a:hover{text-decoration:underline}
   border-radius:100px; border:1px solid var(--line); background:var(--panel);
   color:var(--fg); font-size:14.5px; font-weight:500;
   transition:transform .16s ease, border-color .16s ease, background .16s ease}
-.btn:hover{transform:translateY(-2px); border-color:#3a4150; background:#171a24; text-decoration:none}
-.btn.primary{background:linear-gradient(100deg,var(--blue),#0b7fb8); border-color:transparent; color:#fff}
+.btn:hover{transform:translateY(-2px); text-decoration:none}
+.btn:not(.primary){border:1px solid transparent;
+  background:linear-gradient(#11141c,#11141c) padding-box, linear-gradient(100deg,var(--blue),var(--red)) border-box}
+.btn:not(.primary):hover{background:linear-gradient(#171b25,#171b25) padding-box, linear-gradient(100deg,var(--blue),var(--red)) border-box;
+  box-shadow:0 6px 22px rgba(0,162,232,.14)}
+.btn.primary{background:linear-gradient(100deg,var(--blue),var(--red)); border-color:transparent; color:#fff;
+  box-shadow:0 6px 24px rgba(0,162,232,.22), 0 6px 24px rgba(220,30,30,.14)}
 .btn.primary:hover{filter:brightness(1.1)}
 .btn.ghost{background:transparent}
 
@@ -272,7 +277,7 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .num.up{color:var(--blue-soft)}
 .lab b{color:var(--fg); font-weight:600}
 
-.btn.disabled{opacity:.5; cursor:default; pointer-events:none}
+.btn.disabled{cursor:default}
 .btn i{font-style:normal; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
   opacity:.7; margin-left:5px}
 
