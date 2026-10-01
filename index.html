@@ -89,62 +89,116 @@
 
 <section id="method" class="sec alt">
   <div class="wrap narrow">
-    <div class="eyebrow reveal">The idea</div>
+    <div class="eyebrow reveal">Method</div>
     <h2 class="reveal">A single goal says <em>where</em>. A chain says <em>how</em>.</h2>
     <p class="lead reveal">
-      World action models predict future visual dynamics and actions together. Dense video
-      rollouts are expensive; collapsing the future into one final-goal frame is cheap but
-      leaves the whole execution path unspecified. ProWAM sits between the two: a short,
-      <b>ordered chain of sparse sub-goals</b>, each pinned to a point along task progress.
+      Dense video rollouts guide well but are slow; imagining nothing is fast but blind past the
+      next chunk. ProWAM predicts a few <b>sparse sub-goals</b>, each pinned to a relative
+      progress <span class="k">r</span>, and grounds every action in them.
     </p>
   </div>
 
   <div class="wrap">
-      <div class="stagebar reveal" role="tablist">
-        <button data-stage="1" class="on">Stage 1 &mdash; learn to imagine</button>
-        <button data-stage="2">Stage 2 &mdash; learn to act</button>
-        <button data-stage="3">Inference &mdash; imagine once, act many</button>
-      </div>
-
-      <div class="dia reveal" data-stage="1">
-        <div class="dia-in part in">
-          <img src="static/mf/obs.jpg" alt="observation"/>
-          <b>observation</b>
-        </div>
-        <div class="dia-arrow part in" aria-hidden="true"></div>
-
-        <div class="mot">
-          <div class="mot-hd">Mixture of transformers <em>shared attention, separate weights</em></div>
-          <div class="mot-body">
-            <div class="expert vid part video"><h4>Video expert</h4>
-              <div class="toks"><span class="tk o">frame</span><span class="tk g">goal</span><span class="tk g">goal</span><span class="tk g">goal</span></div>
-            </div>
-            <div class="expert act part action"><h4>Action expert</h4>
-              <div class="toks"><span class="tk a">act</span><span class="tk a">act</span><span class="tk a">act</span></div>
-            </div>
-          </div>
-          <div class="mask">
-            <span class="mask-h">attends to</span>
-            <div class="mask-row part video"><b>goals</b><i class="y">frame</i><i class="y">goals</i><i class="n">actions</i></div>
-            <div class="mask-row part action"><b>actions</b><i class="y">frame</i><i class="y">goals</i><i class="n">actions</i></div>
-          </div>
-        </div>
-
-        <div class="dia-arrow part in" aria-hidden="true"></div>
-
-        <div class="dia-out">
-          <div class="part video"><b>imagined chain</b>
-            <div class="thumbs"><img src="static/mf/g0.jpg" alt=""/><img src="static/mf/g1.jpg" alt=""/><img src="static/mf/g2.jpg" alt=""/></div>
-          </div>
-          <div class="part action"><b>action chunk</b>
-            <div class="thumbs red"><img src="static/mf/a0.jpg" alt=""/><img src="static/mf/a1.jpg" alt=""/><img src="static/mf/a2.jpg" alt=""/></div>
-          </div>
-        </div>
-      </div>
-
-      <p class="stage-note reveal" id="stageNote"></p>
+    <div class="spec reveal">
+      <div class="spec-it"><div class="spec-fr"><i class="ph">&empty;</i></div><b>Zero imagination</b><span>fast, no foresight</span></div>
+      <div class="spec-it"><div class="spec-fr"><img src="static/rc/sg5.jpg" alt=""/></div><b>Final goal</b><span>where, not how</span></div>
+      <div class="spec-it me"><div class="spec-fr"><img src="static/rc/sg1.jpg" alt=""/><img src="static/rc/sg3.jpg" alt=""/><img src="static/rc/sg5.jpg" alt=""/></div><b>ProWAM</b><span>sparse, progress-indexed</span></div>
+      <div class="spec-it"><div class="spec-fr dense"><img src="static/mf/x1.jpg" alt=""/><img src="static/mf/x2.jpg" alt=""/><img src="static/mf/x3.jpg" alt=""/><img src="static/rc/sg0.jpg" alt=""/><img src="static/rc/sg1.jpg" alt=""/><img src="static/rc/sg2.jpg" alt=""/></div><b>Full imagination</b><span>dense, slow</span></div>
     </div>
-  </section>
+
+    <div class="stagebar reveal" role="tablist">
+      <button data-stage="1" class="on">Stage 1 &middot; Video-only pretraining</button>
+      <button data-stage="2">Stage 2 &middot; Joint fine-tuning</button>
+      <button data-stage="3">Inference &middot; Sub-goal caching</button>
+    </div>
+
+    <div class="arch2-scroll reveal">
+    <div class="arch2" data-stage="1">
+      <div class="a2-side">
+        <div class="a2-cols">
+          <i></i><i></i>
+          <div class="slot up" data-role="x"><span class="tok x">X<sub>1</sub></span></div>
+          <div class="slot up" data-role="x"><span class="tok x">X<sub>2</sub></span></div>
+          <div class="slot up" data-role="x"><span class="tok x">X<sub>3</sub></span></div>
+          <i></i>
+          <div class="slot up" data-role="g"><span class="tok g">G<sub>1</sub></span></div>
+          <i></i>
+          <div class="slot up" data-role="g"><span class="tok g">G<sub>2</sub></span></div>
+        </div>
+        <div class="a2-bar vid">
+          <span class="a2-name">Video Expert</span>
+          <span class="badge" data-s="1 2">&#8466;<sub>video</sub> + &#8466;<sub>sub</sub></span>
+          <span class="badge" data-s="3">1 forward pass</span>
+          <span class="kv" data-s="3">KV cache</span>
+        </div>
+        <div class="a2-cols">
+          <div class="slot dn" data-role="t"><span class="tok t">T</span></div>
+          <div class="slot dn" data-role="i"><span class="tok i">I<sub>ref</sub></span></div>
+          <div class="slot dn" data-role="x"><span class="tok x n">X<sub>1</sub></span></div>
+          <div class="slot dn" data-role="x"><span class="tok x n">X<sub>2</sub></span></div>
+          <div class="slot dn" data-role="x"><span class="tok x n">X<sub>3</sub></span></div>
+          <i></i>
+          <div class="slot dn" data-role="g"><span class="tok g n">G<sub>1</sub></span></div>
+          <i></i>
+          <div class="slot dn" data-role="g"><span class="tok g n">G<sub>2</sub></span></div>
+        </div>
+        <div class="a2-cols lbls">
+          <span data-lr="t">prompt</span><span data-lr="i">first frame</span>
+          <span class="s3" data-lr="x">video latent</span><i></i>
+          <span class="s3" data-lr="g">sub-goal latent</span>
+        </div>
+
+        <div class="a2-cols frames">
+          <q data-role="t">pick the kettle, place it on a burner</q>
+          <figure data-role="i"><img src="static/rc/ob.jpg" alt="current observation"/><figcaption>t=0 &middot; r=0</figcaption></figure>
+          <figure data-role="x"><img src="static/mf/x1.jpg" alt=""/><figcaption>t=1</figcaption></figure>
+          <figure data-role="x"><img src="static/mf/x2.jpg" alt=""/><figcaption>t=2</figcaption></figure>
+          <figure data-role="x"><img src="static/mf/x3.jpg" alt=""/><figcaption>t=3</figcaption></figure>
+          <i></i>
+          <figure data-role="g" class="g"><img src="static/rc/sg1.jpg" alt="sub-goal at r=0.4"/><figcaption>r=0.4</figcaption></figure>
+          <i></i>
+          <figure data-role="g" class="g"><img src="static/rc/sg4.jpg" alt="sub-goal at r=0.8"/><figcaption>r=0.8</figcaption></figure>
+        </div>
+        <div class="a2-axis"><span>task timeline</span></div>
+        <p class="a2-key"><span class="k">t</span> frame index &nbsp;&middot;&nbsp; <span class="k">r</span> relative progress, re-anchored to the latest observation every replan</p>
+      </div>
+
+      <div class="a2-side">
+        <div class="a2-cols3">
+          <div class="slot up" data-role="a"><span class="tok a">A<sub>0</sub></span></div>
+          <div class="slot up" data-role="a"><span class="tok a">A<sub>1</sub></span></div>
+          <div class="slot up" data-role="a"><span class="tok a">A<sub>2</sub></span></div>
+        </div>
+        <div class="a2-bar act" data-role="a">
+          <span class="a2-name">Action Expert</span>
+          <span class="badge" data-s="2">&#8466;<sub>act</sub></span>
+          <span class="badge" data-s="3">&times;T steps</span>
+        </div>
+        <div class="a2-cols3">
+          <div class="slot dn" data-role="a"><span class="tok a n">A<sub>0</sub></span></div>
+          <div class="slot dn" data-role="a"><span class="tok a n">A<sub>1</sub></span></div>
+          <div class="slot dn" data-role="a"><span class="tok a n">A<sub>2</sub></span></div>
+        </div>
+        <div class="a2-cols3 lbls"><span class="s3" data-lr="a">action chunk</span></div>
+
+        <div class="amask" aria-label="attention mask: rows are queries, columns are keys">
+          <span></span><span class="h" data-role="i">X<sub>0</sub></span><span class="h" data-role="x">X</span><span class="h" data-role="g">G</span><span class="h" data-role="a">A</span>
+          <span class="h" data-role="i">X<sub>0</sub></span><i class="y i" data-q="i" data-k="i"></i><i data-q="i" data-k="x"></i><i data-q="i" data-k="g"></i><i class="cut" data-q="i" data-k="a"></i>
+          <span class="h" data-role="x">X</span><i class="y x" data-q="x" data-k="i"></i><i class="y x" data-q="x" data-k="x"></i><i class="y x" data-q="x" data-k="g"></i><i class="cut" data-q="x" data-k="a"></i>
+          <span class="h" data-role="g">G</span><i class="y g" data-q="g" data-k="i"></i><i data-q="g" data-k="x"></i><i class="y g" data-q="g" data-k="g"></i><i class="cut" data-q="g" data-k="a"></i>
+          <span class="h" data-role="a">A</span><i class="y a" data-q="a" data-k="i"></i><i data-q="a" data-k="x"></i><i class="y a" data-q="a" data-k="g"></i><i class="y a" data-q="a" data-k="a"></i>
+        </div>
+        <p class="amask-cap">attention mask &middot; query &rarr; key</p>
+      </div>
+    </div>
+    </div>
+
+    <div class="stage-note reveal">
+      <h3 id="stageTitle"></h3>
+      <p id="stageNote"></p>
+    </div>
+  </div>
+</section>
 
 <section class="sec">
   <div class="wrap narrow">
@@ -199,12 +253,17 @@
         </div>
         <div class="cl-line"><div class="cl-line-fill"></div></div>
       </div>
-      <div class="sgv reveal" data-frames='["static/rc/sg0.jpg","static/rc/sg1.jpg","static/rc/sg2.jpg","static/rc/sg3.jpg","static/rc/sg4.jpg","static/rc/sg5.jpg"]' data-r='"0.3","0.4","0.5","0.65","0.8","0.9"'>
+      <div class="sgv reveal">
         <div class="cl-row-head"><span class="sp seen">RoboCasa365</span>&ldquo;Pick the kettle from the counter and place it on a stove burner&rdquo; <em class="kbadge">K = 6</em></div>
-        <div class="sgv-stage">
-          <div class="sgv-side"><img src="static/rc/ob.jpg" alt="observation"/><span>observe</span></div>
-          <div class="sgv-main"><img class="sgv-img" src="static/rc/sg0.jpg" alt="imagined sub-goal"/><span class="sgv-cap">imagine <b>r = 0.3</b></span></div>
-          <div class="sgv-side"><img src="static/rc/ex.gif" alt="execution"/><span>execute</span></div>
+        <div class="sgv-chain">
+          <div class="sgv-c obs"><img src="static/rc/ob.jpg" alt="observation"/><span>observe</span></div>
+          <div class="sgv-c sg"><img src="static/rc/sg0.jpg" alt="imagined sub-goal r=0.3"/><span>r = 0.3</span></div>
+          <div class="sgv-c sg"><img src="static/rc/sg1.jpg" alt="imagined sub-goal r=0.4"/><span>r = 0.4</span></div>
+          <div class="sgv-c sg"><img src="static/rc/sg2.jpg" alt="imagined sub-goal r=0.5"/><span>r = 0.5</span></div>
+          <div class="sgv-c sg"><img src="static/rc/sg3.jpg" alt="imagined sub-goal r=0.65"/><span>r = 0.65</span></div>
+          <div class="sgv-c sg"><img src="static/rc/sg4.jpg" alt="imagined sub-goal r=0.8"/><span>r = 0.8</span></div>
+          <div class="sgv-c sg"><img src="static/rc/sg5.jpg" alt="imagined sub-goal r=0.9"/><span>r = 0.9</span></div>
+          <div class="sgv-c exec"><img src="static/rc/ex.gif" alt="execution"/><span>execute</span></div>
         </div>
         <div class="sgv-ctl">
           <button class="sgv-play" aria-label="pause">&#10073;&#10073;</button>

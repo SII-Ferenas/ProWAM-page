@@ -113,44 +113,34 @@
     io.observe(row);
   });
 
-  // --- method figure: stagger the reveal, then let the pulse loop ---------
-  var mf = document.querySelector('.mf');
-  if (mf) {
-    mf.querySelectorAll('.mf-goals figure').forEach(function (f, i) {
-      f.style.setProperty('--d', (0.35 + i * 0.16) + 's');
-    });
-    mf.querySelectorAll('.mf-acts figure').forEach(function (f, i) {
-      f.style.setProperty('--d', (1.05 + i * 0.1) + 's');
-    });
-    if (reduced || !('IntersectionObserver' in window)) {
-      mf.classList.add('run');
-    } else {
-      var mio = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) { mf.classList.add('run'); mio.disconnect(); } });
-      }, { threshold: 0.25 });
-      mio.observe(mf);
-    }
-  }
-
   // --- stage switcher: light only the parts a stage touches ---------------
   var bar = document.querySelector('.stagebar');
-  if (bar) {
-    var dia = document.querySelector('.dia');
+  var arch = document.querySelector('.arch2');
+  if (bar && arch) {
+    var title = document.getElementById('stageTitle');
     var note = document.getElementById('stageNote');
-    var NOTES = {
-      '1': 'Action-free video only. The video expert learns to imagine the chain; there are no action labels and no action expert in the loop.',
-      '2': 'Robot demonstrations. Both experts train together — the action expert learns to read the chain and emit actions.',
-      '3': 'Closed loop. The video pass runs once and its sub-goal features are reused, so each replan only denoises the action head.'
+    var STAGES = {
+      '1': { off: ['a'], t: 'Video-only pretraining',
+        n: 'Action-free videos only. The video expert learns visual dynamics and to predict the scene at any requested progress r. No action labels, no action expert.' },
+      '2': { off: [], t: 'Joint fine-tuning',
+        n: 'On robot demonstrations both experts train together. Action tokens attend to the observation and the sub-goals, so every action chunk is grounded in the plan.' },
+      '3': { off: ['x'], t: 'Inference with sub-goal caching',
+        n: 'No dense rollout. The video expert runs once on the observation and sub-goal slots; their key\u2013value features are cached and the action expert denoises all T steps against them \u2014 about 10\u00d7 fewer video-expert passes. A new observation refreshes the cache.' }
     };
     function apply(s) {
-      dia.dataset.stage = s;
-      dia.querySelectorAll('.part').forEach(function (el) {
-        el.classList.remove('off', 'cached');
-        var isV = el.classList.contains('video'), isA = el.classList.contains('action');
-        if (s === '1' && isA) el.classList.add('off');
-        if (s === '3' && isV) el.classList.add('cached');
+      var st = STAGES[s];
+      arch.dataset.stage = s;
+      arch.querySelectorAll('[data-role]').forEach(function (el) {
+        el.classList.toggle('off', st.off.indexOf(el.dataset.role) > -1);
       });
-      if (note) note.textContent = NOTES[s];
+      arch.querySelectorAll('.amask i').forEach(function (el) {
+        el.classList.toggle('off', st.off.indexOf(el.dataset.q) > -1 || st.off.indexOf(el.dataset.k) > -1);
+      });
+      arch.querySelectorAll('[data-s]').forEach(function (el) {
+        el.hidden = el.dataset.s.split(' ').indexOf(s) < 0;
+      });
+      title.textContent = st.t;
+      note.textContent = st.n;
       bar.querySelectorAll('button').forEach(function (b) {
         b.classList.toggle('on', b.dataset.stage === s);
       });
@@ -214,29 +204,22 @@
     });
   }
 
-  // --- sub-goal viewer: autoplays, yields to the slider, any K -----------
+  // --- sub-goal chain: light the milestones one by one, any K -------------
   document.querySelectorAll('.sgv').forEach(function (v) {
-    var frames, rs;
-    try {
-      frames = JSON.parse(v.dataset.frames);
-      rs = JSON.parse(v.dataset.r);
-    } catch (e) { return; }
-    if (!frames.length) return;
-
-    var img = v.querySelector('.sgv-img');
-    var cap = v.querySelector('.sgv-cap');
+    var cells = v.querySelectorAll('.sgv-c.sg');
+    if (!cells.length) return;
     var range = v.querySelector('.sgv-range');
     var val = v.querySelector('.sgv-val');
     var play = v.querySelector('.sgv-play');
     var timer = null;
-
-    frames.forEach(function (src) { var im = new Image(); im.src = src; });
-    range.max = frames.length - 1;
+    range.max = cells.length - 1;
 
     function show(i) {
-      img.src = frames[i];
-      cap.innerHTML = 'imagine <b>r = ' + rs[i] + '</b>';
-      val.textContent = (i + 1) + ' / ' + frames.length;
+      cells.forEach(function (c, j) {
+        c.classList.toggle('lit', j <= i);
+        c.classList.toggle('on', j === i);
+      });
+      val.textContent = (i + 1) + ' / ' + cells.length;
     }
     function start() {
       if (timer || reduced) return;
@@ -244,9 +227,9 @@
       play.innerHTML = '&#10073;&#10073;';
       play.setAttribute('aria-label', 'pause');
       timer = setInterval(function () {
-        range.value = (parseInt(range.value, 10) + 1) % frames.length;
+        range.value = (parseInt(range.value, 10) + 1) % cells.length;
         show(parseInt(range.value, 10));
-      }, 1000);
+      }, 900);
     }
     function stop() {
       if (timer) { clearInterval(timer); timer = null; }
@@ -255,18 +238,16 @@
       play.setAttribute('aria-label', 'play');
     }
 
-    // Grabbing the slider hands control over; the button gives it back.
     ['input', 'pointerdown'].forEach(function (ev) {
       range.addEventListener(ev, function () { stop(); show(parseInt(range.value, 10)); });
     });
     play.addEventListener('click', function () { timer ? stop() : start(); });
 
+    if (reduced) { stop(); show(cells.length - 1); range.value = cells.length - 1; return; }
     show(0);
-    if (reduced) { stop(); return; }
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
-          // Only resume automatically if the reader has not taken over.
           if (e.isIntersecting && !play.classList.contains('paused')) start();
           else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
         });
