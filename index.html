@@ -205,72 +205,97 @@
     <div class="eyebrow reveal">Closed loop</div>
     <h2 class="reveal">Progress is <em>relative</em>, so the plan re-anchors every replan.</h2>
     <p class="lead reveal">
-      The first replan and a later one from the same episode. Each starts from a <b>fresh observation</b> &mdash; that frame is <span class="k">r = 0</span>, so the same <span class="k">r = 0.7</span> names a different target as the scene moves.
+      Every replan starts from a <b>fresh observation</b> at <span class="k">r = 0</span> and re-imagines the chain.
+      Rollouts play on their own &mdash; drag to step through sub-goals, or jump to a replan.
     </p>
   </div>
   <div class="wrap">
-      <div class="cl-row reveal">
-        <div class="cl-row-head"><span class="sp seen">seen</span>&ldquo;put both the alphabet soup and the tomato sauce in the basket&rdquo;</div>
-        <div class="cl-track">
-            <div class="cl-round" data-i="0">
-              <div class="cl-trio">
-                <div class="cl-cell obs"><img src="static/cl/t1_ob0.png" alt="observation"/><span>observe</span></div>
-                <div class="cl-cell imagine"><img src="static/cl/t1_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
-                <div class="cl-cell exec"><img src="static/cl/t1_ex0.gif" alt="execution"/><span>execute</span></div>
-              </div>
-              <div class="cl-tick"><b></b><em>replan 1</em></div>
-            </div>
-            <div class="cl-round" data-i="1">
-              <div class="cl-trio">
-                <div class="cl-cell obs"><img src="static/cl/t1_ob3.png" alt="observation"/><span>observe</span></div>
-                <div class="cl-cell imagine"><img src="static/cl/t1_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
-                <div class="cl-cell exec"><img src="static/cl/t1_ex3.gif" alt="execution"/><span>execute</span></div>
-              </div>
-              <div class="cl-tick"><b></b><em>replan 4</em></div>
-            </div>
+    <div class="roll-grid">
+      <div class="roll reveal" style="--ar:1" data-reps="[{&quot;ob&quot;: &quot;static/cl/t1_ob0.png&quot;, &quot;g&quot;: [&quot;static/cl/t1_sg0.png&quot;], &quot;ex&quot;: &quot;static/cl/t1_ex0.gif&quot;}, {&quot;ob&quot;: &quot;static/cl/t1_ob3.png&quot;, &quot;g&quot;: [&quot;static/cl/t1_sg3.png&quot;], &quot;ex&quot;: &quot;static/cl/t1_ex3.gif&quot;}]" data-labels="[&quot;1&quot;, &quot;4&quot;]">
+        <div class="roll-hd"><span class="dom">LIBERO</span><span class="sp seen">seen</span><em class="kbadge">K = 1</em></div>
+        <p class="roll-task">&ldquo;put both the alphabet soup and the tomato sauce in the basket&rdquo;</p>
+        <div class="roll-stage">
+          <figure class="obs"><img alt="observation"/><figcaption>observe</figcaption></figure>
+          <figure class="img"><img alt="imagined sub-goal"/><figcaption>imagine <b></b></figcaption></figure>
+          <figure class="exec"><img alt="execution"/><figcaption>execute</figcaption></figure>
         </div>
-        <div class="cl-line"><div class="cl-line-fill"></div></div>
-      </div>
-      <div class="cl-row reveal">
-        <div class="cl-row-head"><span class="sp unseen">unseen</span>&ldquo;turn on the stove and put the moka pot on it&rdquo;</div>
-        <div class="cl-track">
-            <div class="cl-round" data-i="0">
-              <div class="cl-trio">
-                <div class="cl-cell obs"><img src="static/cl/t3_ob0.png" alt="observation"/><span>observe</span></div>
-                <div class="cl-cell imagine"><img src="static/cl/t3_sg0.png" alt="imagined sub-goal"/><span>imagine</span></div>
-                <div class="cl-cell exec"><img src="static/cl/t3_ex0.gif" alt="execution"/><span>execute</span></div>
-              </div>
-              <div class="cl-tick"><b></b><em>replan 1</em></div>
-            </div>
-            <div class="cl-round" data-i="1">
-              <div class="cl-trio">
-                <div class="cl-cell obs"><img src="static/cl/t3_ob3.png" alt="observation"/><span>observe</span></div>
-                <div class="cl-cell imagine"><img src="static/cl/t3_sg3.png" alt="imagined sub-goal"/><span>imagine</span></div>
-                <div class="cl-cell exec"><img src="static/cl/t3_ex3.gif" alt="execution"/><span>execute</span></div>
-              </div>
-              <div class="cl-tick"><b></b><em>replan 4</em></div>
-            </div>
-        </div>
-        <div class="cl-line"><div class="cl-line-fill"></div></div>
-      </div>
-      <div class="sgv reveal">
-        <div class="cl-row-head"><span class="sp seen">RoboCasa365</span>&ldquo;Pick the kettle from the counter and place it on a stove burner&rdquo; <em class="kbadge">K = 6</em></div>
-        <div class="sgv-chain">
-          <div class="sgv-c obs"><img src="static/rc/ob.jpg" alt="observation"/><span>observe</span></div>
-          <div class="sgv-c sg"><img src="static/rc/sg0.jpg" alt="imagined sub-goal r=0.3"/><span>r = 0.3</span></div>
-          <div class="sgv-c sg"><img src="static/rc/sg1.jpg" alt="imagined sub-goal r=0.4"/><span>r = 0.4</span></div>
-          <div class="sgv-c sg"><img src="static/rc/sg2.jpg" alt="imagined sub-goal r=0.5"/><span>r = 0.5</span></div>
-          <div class="sgv-c sg"><img src="static/rc/sg3.jpg" alt="imagined sub-goal r=0.65"/><span>r = 0.65</span></div>
-          <div class="sgv-c sg"><img src="static/rc/sg4.jpg" alt="imagined sub-goal r=0.8"/><span>r = 0.8</span></div>
-          <div class="sgv-c sg"><img src="static/rc/sg5.jpg" alt="imagined sub-goal r=0.9"/><span>r = 0.9</span></div>
-          <div class="sgv-c exec"><img src="static/rc/ex.gif" alt="execution"/><span>execute</span></div>
-        </div>
-        <div class="sgv-ctl">
-          <button class="sgv-play" aria-label="pause">&#10073;&#10073;</button>
-          <input class="sgv-range" type="range" min="0" max="5" step="1" value="0" aria-label="sub-goal progress"/>
-          <span class="sgv-val">1 / 6</span>
+        <div class="roll-ctl">
+          <button class="roll-play" aria-label="pause">&#10073;&#10073;</button>
+          <input class="roll-range" type="range" min="0" max="0" step="1" value="0" aria-label="sub-goal"/>
+          <span class="roll-reps"><em>replan</em></span>
         </div>
       </div>
+      <div class="roll reveal" style="--ar:1" data-reps="[{&quot;ob&quot;: &quot;static/cl/t3_ob0.png&quot;, &quot;g&quot;: [&quot;static/cl/t3_sg0.png&quot;], &quot;ex&quot;: &quot;static/cl/t3_ex0.gif&quot;}, {&quot;ob&quot;: &quot;static/cl/t3_ob3.png&quot;, &quot;g&quot;: [&quot;static/cl/t3_sg3.png&quot;], &quot;ex&quot;: &quot;static/cl/t3_ex3.gif&quot;}]" data-labels="[&quot;1&quot;, &quot;4&quot;]">
+        <div class="roll-hd"><span class="dom">LIBERO</span><span class="sp unseen">unseen</span><em class="kbadge">K = 1</em></div>
+        <p class="roll-task">&ldquo;turn on the stove and put the moka pot on it&rdquo;</p>
+        <div class="roll-stage">
+          <figure class="obs"><img alt="observation"/><figcaption>observe</figcaption></figure>
+          <figure class="img"><img alt="imagined sub-goal"/><figcaption>imagine <b></b></figcaption></figure>
+          <figure class="exec"><img alt="execution"/><figcaption>execute</figcaption></figure>
+        </div>
+        <div class="roll-ctl">
+          <button class="roll-play" aria-label="pause">&#10073;&#10073;</button>
+          <input class="roll-range" type="range" min="0" max="0" step="1" value="0" aria-label="sub-goal"/>
+          <span class="roll-reps"><em>replan</em></span>
+        </div>
+      </div>
+      <div class="roll reveal" style="--ar:1.25" data-reps="[{&quot;ob&quot;: &quot;static/ro/rt_stack_0_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rt_stack_0_g0.jpg&quot;, &quot;static/ro/rt_stack_0_g1.jpg&quot;, &quot;static/ro/rt_stack_0_g2.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rt_stack_0_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rt_stack_1_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rt_stack_1_g0.jpg&quot;, &quot;static/ro/rt_stack_1_g1.jpg&quot;, &quot;static/ro/rt_stack_1_g2.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rt_stack_1_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rt_stack_2_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rt_stack_2_g0.jpg&quot;, &quot;static/ro/rt_stack_2_g1.jpg&quot;, &quot;static/ro/rt_stack_2_g2.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rt_stack_2_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rt_stack_3_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rt_stack_3_g0.jpg&quot;, &quot;static/ro/rt_stack_3_g1.jpg&quot;, &quot;static/ro/rt_stack_3_g2.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rt_stack_3_ex.gif&quot;}]" data-labels="[&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]">
+        <div class="roll-hd"><span class="dom">RoboTwin</span><span class="sp seen">seen</span><em class="kbadge">K = 3</em></div>
+        <p class="roll-task">&ldquo;use the left arm to move the red block to the center, then stack the green block on it&rdquo;</p>
+        <div class="roll-stage">
+          <figure class="obs"><img alt="observation"/><figcaption>observe</figcaption></figure>
+          <figure class="img"><img alt="imagined sub-goal"/><figcaption>imagine <b></b></figcaption></figure>
+          <figure class="exec"><img alt="execution"/><figcaption>execute</figcaption></figure>
+        </div>
+        <div class="roll-ctl">
+          <button class="roll-play" aria-label="pause">&#10073;&#10073;</button>
+          <input class="roll-range" type="range" min="0" max="2" step="1" value="0" aria-label="sub-goal"/>
+          <span class="roll-reps"><em>replan</em></span>
+        </div>
+      </div>
+      <div class="roll reveal" style="--ar:1" data-reps="[{&quot;ob&quot;: &quot;static/ro/rc_kettle_0_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_kettle_0_g0.jpg&quot;, &quot;static/ro/rc_kettle_0_g1.jpg&quot;, &quot;static/ro/rc_kettle_0_g2.jpg&quot;, &quot;static/ro/rc_kettle_0_g3.jpg&quot;, &quot;static/ro/rc_kettle_0_g4.jpg&quot;, &quot;static/ro/rc_kettle_0_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_kettle_0_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_kettle_1_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_kettle_1_g0.jpg&quot;, &quot;static/ro/rc_kettle_1_g1.jpg&quot;, &quot;static/ro/rc_kettle_1_g2.jpg&quot;, &quot;static/ro/rc_kettle_1_g3.jpg&quot;, &quot;static/ro/rc_kettle_1_g4.jpg&quot;, &quot;static/ro/rc_kettle_1_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_kettle_1_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_kettle_2_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_kettle_2_g0.jpg&quot;, &quot;static/ro/rc_kettle_2_g1.jpg&quot;, &quot;static/ro/rc_kettle_2_g2.jpg&quot;, &quot;static/ro/rc_kettle_2_g3.jpg&quot;, &quot;static/ro/rc_kettle_2_g4.jpg&quot;, &quot;static/ro/rc_kettle_2_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_kettle_2_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_kettle_3_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_kettle_3_g0.jpg&quot;, &quot;static/ro/rc_kettle_3_g1.jpg&quot;, &quot;static/ro/rc_kettle_3_g2.jpg&quot;, &quot;static/ro/rc_kettle_3_g3.jpg&quot;, &quot;static/ro/rc_kettle_3_g4.jpg&quot;, &quot;static/ro/rc_kettle_3_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_kettle_3_ex.gif&quot;}]" data-labels="[&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]" data-r="[&quot;0.3&quot;, &quot;0.4&quot;, &quot;0.5&quot;, &quot;0.65&quot;, &quot;0.8&quot;, &quot;0.9&quot;]">
+        <div class="roll-hd"><span class="dom">RoboCasa365</span><span class="sp seen">seen</span><em class="kbadge">K = 6</em></div>
+        <p class="roll-task">&ldquo;pick the kettle from the counter and place it on a stove burner, then turn the burner on&rdquo;</p>
+        <div class="roll-stage">
+          <figure class="obs"><img alt="observation"/><figcaption>observe</figcaption></figure>
+          <figure class="img"><img alt="imagined sub-goal"/><figcaption>imagine <b></b></figcaption></figure>
+          <figure class="exec"><img alt="execution"/><figcaption>execute</figcaption></figure>
+        </div>
+        <div class="roll-ctl">
+          <button class="roll-play" aria-label="pause">&#10073;&#10073;</button>
+          <input class="roll-range" type="range" min="0" max="5" step="1" value="0" aria-label="sub-goal"/>
+          <span class="roll-reps"><em>replan</em></span>
+        </div>
+      </div>
+      <div class="roll reveal" style="--ar:1" data-reps="[{&quot;ob&quot;: &quot;static/ro/rc_straw_0_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_straw_0_g0.jpg&quot;, &quot;static/ro/rc_straw_0_g1.jpg&quot;, &quot;static/ro/rc_straw_0_g2.jpg&quot;, &quot;static/ro/rc_straw_0_g3.jpg&quot;, &quot;static/ro/rc_straw_0_g4.jpg&quot;, &quot;static/ro/rc_straw_0_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_straw_0_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_straw_1_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_straw_1_g0.jpg&quot;, &quot;static/ro/rc_straw_1_g1.jpg&quot;, &quot;static/ro/rc_straw_1_g2.jpg&quot;, &quot;static/ro/rc_straw_1_g3.jpg&quot;, &quot;static/ro/rc_straw_1_g4.jpg&quot;, &quot;static/ro/rc_straw_1_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_straw_1_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_straw_2_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_straw_2_g0.jpg&quot;, &quot;static/ro/rc_straw_2_g1.jpg&quot;, &quot;static/ro/rc_straw_2_g2.jpg&quot;, &quot;static/ro/rc_straw_2_g3.jpg&quot;, &quot;static/ro/rc_straw_2_g4.jpg&quot;, &quot;static/ro/rc_straw_2_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_straw_2_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_straw_3_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_straw_3_g0.jpg&quot;, &quot;static/ro/rc_straw_3_g1.jpg&quot;, &quot;static/ro/rc_straw_3_g2.jpg&quot;, &quot;static/ro/rc_straw_3_g3.jpg&quot;, &quot;static/ro/rc_straw_3_g4.jpg&quot;, &quot;static/ro/rc_straw_3_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_straw_3_ex.gif&quot;}]" data-labels="[&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]" data-r="[&quot;0.3&quot;, &quot;0.4&quot;, &quot;0.5&quot;, &quot;0.65&quot;, &quot;0.8&quot;, &quot;0.9&quot;]">
+        <div class="roll-hd"><span class="dom">RoboCasa365</span><span class="sp seen">seen</span><em class="kbadge">K = 6</em></div>
+        <p class="roll-task">&ldquo;take a straw from the drawer and place it inside the glass cup on the dining counter&rdquo;</p>
+        <div class="roll-stage">
+          <figure class="obs"><img alt="observation"/><figcaption>observe</figcaption></figure>
+          <figure class="img"><img alt="imagined sub-goal"/><figcaption>imagine <b></b></figcaption></figure>
+          <figure class="exec"><img alt="execution"/><figcaption>execute</figcaption></figure>
+        </div>
+        <div class="roll-ctl">
+          <button class="roll-play" aria-label="pause">&#10073;&#10073;</button>
+          <input class="roll-range" type="range" min="0" max="5" step="1" value="0" aria-label="sub-goal"/>
+          <span class="roll-reps"><em>replan</em></span>
+        </div>
+      </div>
+      <div class="roll reveal" style="--ar:1" data-reps="[{&quot;ob&quot;: &quot;static/ro/rc_toast_0_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_toast_0_g0.jpg&quot;, &quot;static/ro/rc_toast_0_g1.jpg&quot;, &quot;static/ro/rc_toast_0_g2.jpg&quot;, &quot;static/ro/rc_toast_0_g3.jpg&quot;, &quot;static/ro/rc_toast_0_g4.jpg&quot;, &quot;static/ro/rc_toast_0_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_toast_0_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_toast_1_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_toast_1_g0.jpg&quot;, &quot;static/ro/rc_toast_1_g1.jpg&quot;, &quot;static/ro/rc_toast_1_g2.jpg&quot;, &quot;static/ro/rc_toast_1_g3.jpg&quot;, &quot;static/ro/rc_toast_1_g4.jpg&quot;, &quot;static/ro/rc_toast_1_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_toast_1_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_toast_2_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_toast_2_g0.jpg&quot;, &quot;static/ro/rc_toast_2_g1.jpg&quot;, &quot;static/ro/rc_toast_2_g2.jpg&quot;, &quot;static/ro/rc_toast_2_g3.jpg&quot;, &quot;static/ro/rc_toast_2_g4.jpg&quot;, &quot;static/ro/rc_toast_2_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_toast_2_ex.gif&quot;}, {&quot;ob&quot;: &quot;static/ro/rc_toast_3_ob.jpg&quot;, &quot;g&quot;: [&quot;static/ro/rc_toast_3_g0.jpg&quot;, &quot;static/ro/rc_toast_3_g1.jpg&quot;, &quot;static/ro/rc_toast_3_g2.jpg&quot;, &quot;static/ro/rc_toast_3_g3.jpg&quot;, &quot;static/ro/rc_toast_3_g4.jpg&quot;, &quot;static/ro/rc_toast_3_g5.jpg&quot;], &quot;ex&quot;: &quot;static/ro/rc_toast_3_ex.gif&quot;}]" data-labels="[&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]" data-r="[&quot;0.3&quot;, &quot;0.4&quot;, &quot;0.5&quot;, &quot;0.65&quot;, &quot;0.8&quot;, &quot;0.9&quot;]">
+        <div class="roll-hd"><span class="dom">RoboCasa365</span><span class="sp seen">seen</span><em class="kbadge">K = 6</em></div>
+        <p class="roll-task">&ldquo;start the toaster; once the lever pops up, take the bread to the plate&rdquo;</p>
+        <div class="roll-stage">
+          <figure class="obs"><img alt="observation"/><figcaption>observe</figcaption></figure>
+          <figure class="img"><img alt="imagined sub-goal"/><figcaption>imagine <b></b></figcaption></figure>
+          <figure class="exec"><img alt="execution"/><figcaption>execute</figcaption></figure>
+        </div>
+        <div class="roll-ctl">
+          <button class="roll-play" aria-label="pause">&#10073;&#10073;</button>
+          <input class="roll-range" type="range" min="0" max="5" step="1" value="0" aria-label="sub-goal"/>
+          <span class="roll-reps"><em>replan</em></span>
+        </div>
+      </div>
+    </div>
     <div class="cl-legend"><span class="d obs"></span>observation<span class="d imagine"></span>imagined sub-goal<span class="d exec"></span>execution</div>
   </div>
 </section>
@@ -280,9 +305,9 @@
     <div class="eyebrow reveal">Progressive planning emerges</div>
     <h2 class="reveal">Planning that was never taught, only learned.</h2>
     <p class="lead reveal">
-      Stage 1 sees only action-free video &mdash; no actions, no policy, no simulator. Given a
+      <b>Stage 1</b> sees only action-free video &mdash; <b>no actions</b>, no policy, no simulator. Given a
       first frame and an instruction it is asked for the scene at a chosen progress point.
-      <b>Drag the slider</b>: LIBERO and RoboTwin were never in its training data, yet the
+      Drag the slider: LIBERO and RoboTwin were never in its training data, yet the
       imagined milestones advance in step with the real trajectory.
     </p>
   </div>

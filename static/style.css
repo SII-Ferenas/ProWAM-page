@@ -178,33 +178,48 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .sp.seen{background:rgba(0,162,232,.13); color:var(--blue-soft); border:1px solid rgba(0,162,232,.28)}
 .sp.unseen{background:rgba(220,30,30,.14); color:var(--red-soft); border:1px solid rgba(220,30,30,.32)}
 
-/* ---------- closed-loop rows ---------- */
-.cl-row{margin-top:30px}
-.cl-row-head{display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted);
-  font-style:italic; margin-bottom:12px}
-.cl-track{display:grid; grid-template-columns:repeat(2,1fr); gap:34px}
-.cl-round{opacity:.2; transition:opacity .38s ease}
-.cl-round.on{opacity:1}
-.cl-trio{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
-.cl-cell img{width:100%; aspect-ratio:1; object-fit:cover; display:block; border-radius:7px;
-  border:2px solid transparent; transition:border-color .38s ease, box-shadow .38s ease}
-.cl-round.on .cl-cell.obs img{border-color:#5a6474}
-.cl-round.on .cl-cell.imagine img{border-color:var(--blue); box-shadow:0 0 15px rgba(0,162,232,.34)}
-.cl-round.on .cl-cell.exec img{border-color:var(--red); box-shadow:0 0 15px rgba(220,30,30,.28)}
-.cl-cell span{display:block; text-align:center; font-size:9.5px; color:var(--dim);
-  margin-top:5px; letter-spacing:.05em; text-transform:uppercase}
-.cl-round.on .cl-cell.imagine span{color:var(--blue-soft)}
-.cl-round.on .cl-cell.exec span{color:var(--red-soft)}
-.cl-tick{position:relative; text-align:center; margin-top:10px}
-.cl-tick b{display:block; width:9px; height:9px; margin:0 auto 5px; border-radius:50%;
-  background:#2a3038; transition:background .38s ease, box-shadow .38s ease}
-.cl-round.on .cl-tick b{background:var(--blue); box-shadow:0 0 11px rgba(0,162,232,.6)}
-.cl-tick em{font-style:normal; font-size:10px; color:var(--dim); letter-spacing:.07em;
+/* ---------- closed-loop rollouts ---------- */
+.roll-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:30px}
+.roll{background:rgba(18,20,29,.84); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px 18px 14px}
+.roll-hd{display:flex; align-items:center; gap:8px}
+.roll-hd .dom{font-size:12px; font-weight:600; color:var(--fg); letter-spacing:.02em}
+.roll-hd .kbadge{margin-left:auto}
+.roll-task{font-size:12.5px; font-style:italic; color:var(--muted); margin:8px 0 12px; line-height:1.45;
+  min-height:36px}
+.roll-stage{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.roll-stage figure{margin:0; text-align:center}
+.roll-stage img{width:100%; aspect-ratio:var(--ar,1); object-fit:cover; display:block; border-radius:8px;
+  border:2px solid #5a6474; background:#0d0f16}
+.roll-stage .img img{border-color:var(--blue); box-shadow:0 0 16px rgba(0,162,232,.34);
+  transition:opacity .18s ease}
+.roll-stage .exec img{border-color:var(--red); box-shadow:0 0 14px rgba(220,30,30,.26)}
+.roll-stage figcaption{font-size:9.5px; color:var(--dim); margin-top:6px; letter-spacing:.06em;
   text-transform:uppercase}
-.cl-round.on .cl-tick em{color:var(--fg)}
-.cl-line{height:2px; background:#191d25; border-radius:100px; margin-top:-26px; position:relative; z-index:-1}
-.cl-line-fill{height:100%; width:0; border-radius:100px;
-  background:linear-gradient(90deg,var(--blue),var(--red)); transition:width .38s ease}
+.roll-stage .img figcaption{color:var(--blue-soft)}
+.roll-stage .img figcaption b{font-family:"JetBrains Mono",monospace; font-weight:500; text-transform:none;
+  letter-spacing:0; margin-left:3px}
+.roll-stage .exec figcaption{color:var(--red-soft)}
+.roll-ctl{display:flex; align-items:center; gap:12px; margin-top:12px}
+.roll-play{width:28px; height:28px; flex:0 0 auto; border-radius:50%; cursor:pointer; background:transparent;
+  border:1px solid var(--line); color:var(--muted); font-size:9px; line-height:1; font-family:inherit}
+.roll-play.paused{color:var(--blue-soft); border-color:rgba(0,162,232,.5)}
+.roll-range{flex:1; -webkit-appearance:none; appearance:none; height:4px; border-radius:100px;
+  background:linear-gradient(90deg,var(--blue),var(--red)); outline:none}
+.roll-range:disabled{opacity:.3}
+.roll-range::-webkit-slider-thumb{-webkit-appearance:none; width:15px; height:15px; border-radius:50%;
+  background:var(--fg); cursor:pointer; border:3px solid var(--bg)}
+.roll-range::-moz-range-thumb{width:15px; height:15px; border-radius:50%; background:var(--fg);
+  cursor:pointer; border:3px solid var(--bg)}
+.roll-reps{display:flex; align-items:center; gap:4px}
+.roll-reps em{font-style:normal; font-size:9.5px; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--dim); margin-right:3px}
+.roll-reps button{width:22px; height:22px; border-radius:6px; border:1px solid var(--line); background:transparent;
+  color:var(--dim); font:500 10.5px "JetBrains Mono",monospace; cursor:pointer; padding:0; transition:all .2s ease}
+.roll-reps button.on{color:var(--fg); border-color:var(--blue); background:rgba(0,162,232,.16)}
+.kbadge{font-style:normal; font-family:"JetBrains Mono",monospace; font-size:11px;
+  color:var(--blue-soft); border:1px solid rgba(0,162,232,.35); border-radius:100px; padding:2px 9px}
+@media (max-width:900px){ .roll-grid{grid-template-columns:1fr} }
 .cl-legend{display:flex; align-items:center; justify-content:center; gap:7px;
   font-size:11.5px; color:var(--dim); margin-top:34px}
 .cl-legend .d{width:9px; height:9px; border-radius:50%; display:inline-block; margin-left:14px}
@@ -248,36 +263,6 @@ tbody tr.ours td b{color:var(--blue-soft)}
 .btn i{font-style:normal; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
   opacity:.7; margin-left:5px}
 
-/* ---------- sub-goal chain viewer ---------- */
-.sgv{margin-top:34px}
-.sgv-chain{display:grid; grid-template-columns:repeat(8,1fr); gap:8px}
-.sgv-c img{width:100%; aspect-ratio:1; object-fit:cover; display:block; border-radius:7px;
-  border:2px solid #2a313c; transition:border-color .35s ease, box-shadow .35s ease, opacity .35s ease}
-.sgv-c span{display:block; text-align:center; font-size:9.5px; color:var(--dim); margin-top:5px;
-  letter-spacing:.05em; text-transform:uppercase; font-family:"JetBrains Mono",monospace}
-.sgv-c.obs img{border-color:#5a6474}
-.sgv-c.exec img{border-color:var(--red); box-shadow:0 0 15px rgba(220,30,30,.26)}
-.sgv-c.exec span{color:var(--red-soft)}
-.sgv-c.sg img{opacity:.35}
-.sgv-c.sg.lit img{opacity:1; border-color:rgba(0,162,232,.55)}
-.sgv-c.sg.on img{border-color:var(--blue); box-shadow:0 0 16px rgba(0,162,232,.4)}
-.sgv-c.sg.lit span{color:var(--blue-soft)}
-.kbadge{font-style:normal; font-family:"JetBrains Mono",monospace; font-size:11px;
-  color:var(--blue-soft); border:1px solid rgba(0,162,232,.35); border-radius:100px; padding:2px 9px}
-.sgv-ctl{display:flex; align-items:center; gap:14px; margin-top:16px}
-.sgv-play{width:30px; height:30px; flex:0 0 auto; border-radius:50%; cursor:pointer;
-  background:transparent; border:1px solid var(--line); color:var(--muted); font-size:9px;
-  line-height:1; font-family:inherit}
-.sgv-play.paused{color:var(--blue-soft); border-color:rgba(0,162,232,.5)}
-.sgv-range{flex:1; -webkit-appearance:none; appearance:none; height:4px; border-radius:100px;
-  background:linear-gradient(90deg,var(--blue),var(--red)); outline:none}
-.sgv-range::-webkit-slider-thumb{-webkit-appearance:none; width:16px; height:16px; border-radius:50%;
-  background:var(--fg); cursor:pointer; border:3px solid var(--bg)}
-.sgv-range::-moz-range-thumb{width:16px; height:16px; border-radius:50%; background:var(--fg);
-  cursor:pointer; border:3px solid var(--bg)}
-.sgv-val{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--dim); min-width:48px;
-  text-align:right}
-@media (max-width:760px){.sgv-chain{grid-template-columns:repeat(4,1fr)}}
 
 /* Fixed behind every section; bands go translucent so it reads through. */
 .page-fx{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0}
@@ -432,8 +417,6 @@ footer{border-top:1px solid var(--line); padding:38px 0 54px; color:var(--dim); 
   .stats-3{grid-template-columns:1fr}
   .grid-3{grid-template-columns:1fr}
   .emerge-grid{grid-template-columns:1fr}
-  .cl-track{grid-template-columns:repeat(2,1fr); gap:12px}
-  .cl-cell span{font-size:8.5px}
   .scrub-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:760px){

@@ -73,44 +73,65 @@
     io.observe(el);
   });
 
-  // --- closed-loop rows: accumulate, hold, then restart -------------------
-  document.querySelectorAll('.cl-row').forEach(function (row) {
-    var rounds = row.querySelectorAll('.cl-round');
-    var fill = row.querySelector('.cl-line-fill');
-    var i = 0, hold = 0, timer = null;
+  // --- closed-loop rollouts: sub-goals cycle, then the next replan --------
+  document.querySelectorAll('.roll').forEach(function (c) {
+    var reps = JSON.parse(c.dataset.reps), labels = JSON.parse(c.dataset.labels);
+    var rs = c.dataset.r ? JSON.parse(c.dataset.r) : null;
+    var ob = c.querySelector('.obs img'), im = c.querySelector('.img img');
+    var ex = c.querySelector('.exec img'), cap = c.querySelector('.img b');
+    var range = c.querySelector('.roll-range'), play = c.querySelector('.roll-play');
+    var box = c.querySelector('.roll-reps');
+    var K = reps[0].g.length, ri = 0, k = 0, timer = null;
 
+    reps.forEach(function (r) { r.g.concat([r.ob]).forEach(function (s) { new Image().src = s; }); });
+    range.disabled = K < 2;
+    var btns = labels.map(function (l, i) {
+      var b = document.createElement('button');
+      b.textContent = l;
+      b.setAttribute('aria-label', 'replan ' + l);
+      b.addEventListener('click', function () { stop(); showRep(i); showK(0); });
+      box.appendChild(b);
+      return b;
+    });
+
+    function showRep(i) {
+      ri = i; ob.src = reps[i].ob; ex.src = reps[i].ex;
+      btns.forEach(function (b, j) { b.classList.toggle('on', j === i); });
+    }
+    function showK(j) {
+      k = j; range.value = j; im.src = reps[ri].g[j];
+      cap.textContent = rs ? 'r = ' + rs[j] : (K > 1 ? (j + 1) + '/' + K : '');
+    }
     function tick() {
-      if (i < rounds.length) {
-        // A rollout happens in order and does not un-happen, so completed
-        // rounds stay lit rather than dimming as the next one starts.
-        rounds[i].classList.add('on');
-        if (fill) fill.style.width = ((i + 1) / rounds.length) * 100 + '%';
-        i++;
-      } else {
-        // Hold the completed sequence for a beat before clearing, otherwise the
-        // rounds wipe the instant the last one lands.
-        hold = (hold + 1) % 3;
-        if (hold !== 0) return;
-        rounds.forEach(function (r) { r.classList.remove('on'); });
-        if (fill) fill.style.width = '0%';
-        i = 0;
-      }
+      if (k + 1 < K) showK(k + 1);
+      else { showRep((ri + 1) % reps.length); showK(0); }
+    }
+    function start() {
+      if (timer || reduced) return;
+      play.classList.remove('paused'); play.innerHTML = '&#10073;&#10073;'; play.setAttribute('aria-label', 'pause');
+      timer = setInterval(tick, K > 1 ? 950 : 2200);
+    }
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+      play.classList.add('paused'); play.innerHTML = '&#9654;'; play.setAttribute('aria-label', 'play');
     }
 
-    function lightAll() {
-      rounds.forEach(function (r) { r.classList.add('on'); });
-      if (fill) fill.style.width = '100%';
-    }
+    ['input', 'pointerdown'].forEach(function (ev) {
+      range.addEventListener(ev, function () { stop(); showK(parseInt(range.value, 10)); });
+    });
+    play.addEventListener('click', function () { timer ? stop() : start(); });
 
-    if (reduced || !('IntersectionObserver' in window)) { lightAll(); return; }
-
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting && !timer) { tick(); timer = setInterval(tick, 3200); }
-        else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
-      });
-    }, { threshold: 0.2 });
-    io.observe(row);
+    showRep(0); showK(0);
+    if (reduced) { stop(); return; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          // Resume on its own only if the reader has not taken over.
+          if (e.isIntersecting && !play.classList.contains('paused')) start();
+          else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
+        });
+      }, { threshold: 0.3 }).observe(c);
+    } else { start(); }
   });
 
   // --- stage switcher: light only the parts a stage touches ---------------
@@ -204,58 +225,6 @@
     });
   }
 
-  // --- sub-goal chain: light the milestones one by one, any K -------------
-  document.querySelectorAll('.sgv').forEach(function (v) {
-    var cells = v.querySelectorAll('.sgv-c.sg');
-    if (!cells.length) return;
-    var range = v.querySelector('.sgv-range');
-    var val = v.querySelector('.sgv-val');
-    var play = v.querySelector('.sgv-play');
-    var timer = null;
-    range.max = cells.length - 1;
-
-    function show(i) {
-      cells.forEach(function (c, j) {
-        c.classList.toggle('lit', j <= i);
-        c.classList.toggle('on', j === i);
-      });
-      val.textContent = (i + 1) + ' / ' + cells.length;
-    }
-    function start() {
-      if (timer || reduced) return;
-      play.classList.remove('paused');
-      play.innerHTML = '&#10073;&#10073;';
-      play.setAttribute('aria-label', 'pause');
-      timer = setInterval(function () {
-        range.value = (parseInt(range.value, 10) + 1) % cells.length;
-        show(parseInt(range.value, 10));
-      }, 900);
-    }
-    function stop() {
-      if (timer) { clearInterval(timer); timer = null; }
-      play.classList.add('paused');
-      play.innerHTML = '&#9654;';
-      play.setAttribute('aria-label', 'play');
-    }
-
-    ['input', 'pointerdown'].forEach(function (ev) {
-      range.addEventListener(ev, function () { stop(); show(parseInt(range.value, 10)); });
-    });
-    play.addEventListener('click', function () { timer ? stop() : start(); });
-
-    if (reduced) { stop(); show(cells.length - 1); range.value = cells.length - 1; return; }
-    show(0);
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) {
-          if (e.isIntersecting && !play.classList.contains('paused')) start();
-          else if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
-        });
-      }, { threshold: 0.35 });
-      io.observe(v);
-    } else { start(); }
-  });
-
   // --- progress scrubber: plays itself until you grab it -----------------
   var scrub = document.querySelector('.scrub');
   if (scrub) {
@@ -265,11 +234,12 @@
     var buttons = scrub.querySelectorAll('.scrub-toggle button');
     var R = ['0', '0.1', '0.3', '0.5', '0.7', '0.9'];
     var mode = 'gen', auto = null;
+    var EM = function (s) { return (window.__EM && window.__EM[s]) || s; };
 
     cards.forEach(function (c) {
       var k = c.dataset.key;
       ['g', 't'].forEach(function (m) {
-        for (var j = 0; j < 5; j++) { var im = new Image(); im.src = 'static/em/' + k + '_' + m + j + '.jpg'; }
+        for (var j = 0; j < 5; j++) { var im = new Image(); im.src = EM('static/em/' + k + '_' + m + j + '.jpg'); }
       });
     });
 
@@ -278,8 +248,8 @@
       out.textContent = 'r = ' + R[idx];
       cards.forEach(function (c) {
         var k = c.dataset.key, img = c.querySelector('img');
-        img.src = idx === 0 ? 'static/em/' + k + '_f0.jpg'
-                            : 'static/em/' + k + '_' + (mode === 'gen' ? 'g' : 't') + (idx - 1) + '.jpg';
+        img.src = EM(idx === 0 ? 'static/em/' + k + '_f0.jpg'
+                               : 'static/em/' + k + '_' + (mode === 'gen' ? 'g' : 't') + (idx - 1) + '.jpg');
       });
     }
 
