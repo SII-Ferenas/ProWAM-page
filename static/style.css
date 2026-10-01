@@ -409,13 +409,6 @@ header, main, footer, section{position:relative; z-index:1}
 
 @media (max-width:860px){ .spec{grid-template-columns:repeat(2,1fr)} }
 
-/* ---------- bibtex ---------- */
-.cite-sec{padding-bottom:96px}
-.bib{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
-  padding:24px; overflow-x:auto; margin-top:22px}
-.bib code{font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--muted);
-  line-height:1.75; white-space:pre}
-
 footer{border-top:1px solid var(--line); padding:38px 0 54px; color:var(--dim); font-size:14px}
 
 /* ---------- reveal on scroll ---------- */
