@@ -55,13 +55,13 @@ a:hover{text-decoration:underline}
   line-height:.95; margin:0 0 14px}
 .grad{background:linear-gradient(100deg,var(--blue) 0%,var(--blue-soft) 38%,var(--red-soft) 72%,var(--red) 100%);
   -webkit-background-clip:text; background-clip:text; color:transparent}
-.subtitle{font-size:clamp(17px,2.3vw,25px); font-weight:300; color:var(--muted);
-  margin:0 auto 34px; max-width:740px; letter-spacing:-.01em}
+.subtitle{font-size:clamp(19px,2.5vw,29px); font-weight:300; color:var(--muted);
+  margin:0 auto 34px; max-width:880px; letter-spacing:-.01em}
 
-.authors{display:flex; flex-wrap:wrap; justify-content:center; gap:6px 20px;
-  font-size:16.5px; color:var(--fg); margin-bottom:12px}
-.authors sup{color:var(--blue-soft); font-size:11px}
-.affil{font-size:14.5px; color:var(--dim); line-height:1.8}
+.authors{display:flex; flex-wrap:wrap; justify-content:center; gap:8px 26px;
+  font-size:21px; color:var(--fg); margin-bottom:12px}
+.authors sup{color:var(--blue-soft); font-size:13px}
+.affil{font-size:16.5px; color:var(--dim); line-height:1.8}
 .affil sup{color:var(--blue-soft)}
 .affil .note{font-size:12.5px; margin-top:4px}
 
