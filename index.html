@@ -373,8 +373,8 @@
     <div class="eyebrow reveal">Stage-1 imagination</div>
     <h2 class="reveal">No action labels. No target-domain data. <em>Still a visual plan.</em></h2>
     <p class="lead reveal">
-      <b>Stage 1</b> learns from action-free video with instructions, but <b>no action labels or policy supervision</b>.
-      It still predicts sub-goals in LIBERO and RoboTwin, neither of which it saw in training.
+      <b>Stage 1</b> trains on instruction-conditioned video only. Given one frame and an instruction from LIBERO
+      or RoboTwin, it imagines the scene at each progress point <span class="k">r</span>.
     </p>
   </div>
   <div class="wrap">
