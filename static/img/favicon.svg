@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="ProWAM">
+  <title>ProWAM</title>
+  <desc>Progressive sub-goal chain rising from blue to a red target ring.</desc>
+  <defs>
+    <linearGradient id="pw-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d0f16"/>
+      <stop offset="1" stop-color="#07080c"/>
+    </linearGradient>
+    <linearGradient id="pw-arc" x1="0.1" y1="0.85" x2="0.9" y2="0.15">
+      <stop offset="0"    stop-color="#00a2e8"/>
+      <stop offset="0.45" stop-color="#61bdde"/>
+      <stop offset="0.75" stop-color="#f1a29f"/>
+      <stop offset="1"    stop-color="#dc1e1e"/>
+    </linearGradient>
+    <radialGradient id="pw-glowb" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#00a2e8" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#00a2e8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pw-glowr" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#dc1e1e" stop-opacity="0.65"/>
+      <stop offset="1" stop-color="#dc1e1e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="256" height="256" rx="58" fill="url(#pw-bg)"/>
+  <rect x="1.5" y="1.5" width="253" height="253" rx="56.5" fill="none" stroke="#00a2e8" stroke-opacity="0.22" stroke-width="3"/>
+
+  <circle cx="58"  cy="190" r="46" fill="url(#pw-glowb)"/>
+  <circle cx="198" cy="72"  r="54" fill="url(#pw-glowr)"/>
+
+  <path d="M 50 192 C 96 196 142 170 198 74" fill="none" stroke="#1b2330" stroke-width="13" stroke-linecap="round"/>
+  <path d="M 50 192 C 96 196 142 170 198 74" fill="none" stroke="url(#pw-arc)" stroke-width="7" stroke-linecap="round"/>
+
+  <circle cx="50"  cy="192" r="8"    fill="#00a2e8"/>
+  <circle cx="94"  cy="190" r="10"   fill="#2cb0e4"/>
+  <circle cx="133" cy="175" r="12.5" fill="#61bdde"/>
+  <circle cx="166" cy="137" r="15"   fill="#f1a29f"/>
+
+  <circle cx="198" cy="74" r="30" fill="none" stroke="#dc1e1e" stroke-width="10"/>
+  <circle cx="198" cy="74" r="12" fill="#ffffff"/>
+</svg>

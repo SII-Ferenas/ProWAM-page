@@ -24,7 +24,7 @@ body{
   font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
   font-size:17px; line-height:1.68; -webkit-font-smoothing:antialiased;
 }
-img{max-width:100%; display:block}
+img{max-width:100%; height:auto; display:block}
 a{color:var(--blue-soft); text-decoration:none}
 a:hover{text-decoration:underline}
 
@@ -82,7 +82,7 @@ a:hover{text-decoration:underline}
 /* ---------- teaser ---------- */
 .teaser-band{padding:8px 0 56px}
 .teaser-frame{border-radius:var(--radius); background:transparent}
-.teaser{width:100%; display:block; border-radius:9px}
+.teaser{width:100%; height:auto; display:block; border-radius:9px}
 .cap{text-align:center; color:var(--muted); font-size:15.5px; margin:22px auto 0; max-width:680px}
 .cap b{color:var(--fg); font-weight:600}
 
