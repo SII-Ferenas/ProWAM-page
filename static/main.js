@@ -183,7 +183,7 @@
     }
     function seed() {
       // Scale with area so a wide screen is not sparse and a phone is not busy.
-      var n = Math.round(Math.min(120, Math.max(38, (W * H) / 11000)));
+      var n = Math.round(Math.min(380, Math.max(90, (W * H) / 4500)));
       parts = [];
       for (var i = 0; i < n; i++) {
         parts.push({ x: Math.random() * W, y: Math.random() * H,
