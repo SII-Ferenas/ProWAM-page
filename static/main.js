@@ -240,6 +240,17 @@
     } else { play(); }
   });
 
+  // --- BibTeX copy button -------------------------------------------------
+  var bc = document.querySelector('.bib-copy');
+  if (bc) {
+    bc.addEventListener('click', function () {
+      var txt = bc.parentNode.querySelector('code').textContent;
+      function done() { bc.textContent = 'copied'; bc.classList.add('done');
+        setTimeout(function () { bc.textContent = 'copy'; bc.classList.remove('done'); }, 1600); }
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, function () {});
+    });
+  }
+
   // --- OOD wall: every tile plays r = 0 -> 0.9 on its own clock -----------
   var tiles = document.querySelectorAll('.ood-t');
   if (tiles.length) {

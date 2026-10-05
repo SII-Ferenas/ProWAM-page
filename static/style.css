@@ -414,6 +414,17 @@ header, main, footer, section{position:relative; z-index:1}
 
 @media (max-width:860px){ .spec{grid-template-columns:repeat(2,1fr)} }
 
+/* ---------- citation ---------- */
+.bib{position:relative; margin-top:18px; background:rgba(18,20,29,.84); border:1px solid var(--line);
+  border-radius:var(--radius); padding:22px 24px; overflow-x:auto}
+.bib pre{margin:0}
+.bib code{font-family:"JetBrains Mono",monospace; font-size:15px; color:var(--muted); line-height:1.75; white-space:pre}
+.bib-copy{position:absolute; top:12px; right:12px; background:transparent; border:1px solid var(--line);
+  color:var(--dim); font:500 12.5px "JetBrains Mono",monospace; padding:4px 11px; border-radius:100px; cursor:pointer;
+  transition:all .2s ease}
+.bib-copy:hover{color:var(--fg); border-color:var(--blue-soft)}
+.bib-copy.done{color:var(--blue-soft); border-color:var(--blue-soft)}
+
 .foot{position:relative; z-index:1; border-top:1px solid var(--line); padding:26px 24px 40px;
   text-align:center}
 .foot p{margin:0; font-size:13.5px; color:var(--dim)}
